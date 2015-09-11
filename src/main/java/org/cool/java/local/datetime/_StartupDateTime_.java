@@ -1,6 +1,7 @@
 package org.cool.java.local.datetime;
 
 import java.text.ParseException;
+import java.util.Calendar;
 
 public class _StartupDateTime_ {
 
@@ -10,9 +11,14 @@ public class _StartupDateTime_ {
 
 	public static void main( String[] args ) throws ParseException {
 
-		System.out.println( DateTimeUtil.getInstance().calcAge( "1990-02-02" ) );
-		System.out.println( DateTimeUtil.getInstance().calcAge( "1990-09-01" ) );
-		System.out.println( DateTimeUtil.getInstance().calcAge( "1990-12-02" ) );
+		Calendar c = Calendar.getInstance();
+		String dt = DateTimeUtil.FMT_DATE.format( c.getTime() );
+		System.out.println( dt );
+		for ( int i = 0; i < 6; ++ i ) {
+			c.add( Calendar.DAY_OF_MONTH, -1 );
+			dt = DateTimeUtil.FMT_DATE.format( c.getTime() );
+			System.out.println( dt );
+		}
 
 	}
 

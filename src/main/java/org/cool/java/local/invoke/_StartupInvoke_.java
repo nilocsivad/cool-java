@@ -14,12 +14,12 @@ public class _StartupInvoke_ {
 		System.out.println( student );
 		
 //		Student.class.getClass().getDeclaredField( "name" ).set( student, Math.random() + "" );;
-		student.getClass().getDeclaredField( "name" ).set( student, Math.random() + "" );;
+//		student.getClass().getDeclaredField( "name" ).set( student, Math.random() + "" );;
 		System.out.println( student );
 		
-		System.out.println( student.getClass().getDeclaredField( "name" ).get( student ) );
+//		System.out.println( student.getClass().getDeclaredField( "name" ).get( student ) );
 		
-		student.getClass().getDeclaredField( "name" ).set( student, Math.random() + "" );;
+//		student.getClass().getDeclaredField( "name" ).set( student, Math.random() + "" );;
 		System.out.println( student );
 		
 //		Student.class.getClass().getDeclaredMethod( "setName", String.class ).invoke( student, Math.random() + "" );
@@ -31,7 +31,7 @@ public class _StartupInvoke_ {
 }
 
 class Student {
-	public String name;
+	private String name;
 
 	@Override
 	public String toString() {
