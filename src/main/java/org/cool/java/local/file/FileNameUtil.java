@@ -16,20 +16,20 @@ import org.cool.java.local.datetime.DateTimeUtil;
  * @author Colin
  *
  */
-public final class FileName {
+public final class FileNameUtil {
 
 	/**
 	 * 
 	 */
-	private FileName() {
+	private FileNameUtil() {
 		// TODO Auto-generated constructor stub
 	}
 	
 	private static final class FileNameSingleton {
-		private static final FileName INSTANCE = new FileName();
+		private static final FileNameUtil INSTANCE = new FileNameUtil();
 	}
 	
-	public static FileName getInstance() {
+	public static FileNameUtil getInstance() {
 		return FileNameSingleton.INSTANCE;
 	}
 	
