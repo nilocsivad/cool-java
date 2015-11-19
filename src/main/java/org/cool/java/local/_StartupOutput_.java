@@ -22,7 +22,9 @@ public class _StartupOutput_ {
 	public static void main(String[] args) {
 		
 		
-		
+		String cur = "" + System.currentTimeMillis();
+		System.out.println( cur );
+		System.out.println( cur.length() );
 		
 	}
 
