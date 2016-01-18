@@ -21,7 +21,7 @@ public class _StartupEmail {
 	 */
 	public static void main( String[] args ) {
 
-		javamail
+//		javamail
 	}
 
 }
