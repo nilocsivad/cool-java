@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.cool.java.local.email;
+package org.cool.java.email;
 
 /**
  * @author Colin

@@ -1,18 +1,18 @@
 /**
  * 
  */
-package org.cool.java.nothing;
+package org.cool_java;
 
 
 /**
  * @author Colin
  */
-public class Output1 {
+public class BasketEggs {
 	
 	/**
 	 * 
 	 */
-	public Output1() {}
+	public BasketEggs() {}
 	
 	/**
 	 * @param args
