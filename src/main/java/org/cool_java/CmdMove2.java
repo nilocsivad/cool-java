@@ -24,20 +24,20 @@ public class CmdMove2 {
 	 */
 	public static void main(String[] args) throws IOException {
 
-		String from = "F:\\3", dest = "F:\\3";
+		String from = "F:\\Downloads", dest = "F:\\33333333";
 
 		File folder = new File(from);
 
 		String[] suffix = { ".bt.td", ".torrent" };
-		list4(folder, suffix);
-		move2(folder, dest, suffix, false);
+		list4(folder, dest, suffix);
+		// move2(folder, dest, suffix, false);
 
 	}
 
-	static void list4(File folder, final String[] suffix) {
+	static void list4(File folder, String dest, final String[] suffix) throws IOException {
 		for (File f : folder.listFiles()) {
 			if (f.isDirectory()) {
-				list4(f, suffix);
+				list4(f, dest, suffix);
 			} else {
 				if (suffix.length > 0) {
 					boolean _jmp = false;
@@ -52,6 +52,7 @@ public class CmdMove2 {
 				}
 				String p = f.getAbsolutePath();
 				System.out.println(p);
+				Runtime.getRuntime().exec(String.format(" cmd /c move \"%s\" \"%s\" ", f.getAbsolutePath(), dest));
 			}
 		}
 	}
