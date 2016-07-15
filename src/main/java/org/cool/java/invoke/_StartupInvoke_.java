@@ -1,55 +1,55 @@
 package org.cool.java.invoke;
 
-import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Field;
 
 public class _StartupInvoke_ {
 
 	public _StartupInvoke_() {
-		// TODO Auto-generated constructor stub
 	}
 
-	public static void main( String[] args ) throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException, InvocationTargetException, NoSuchMethodException {
+	public static void main(String[] args) {
 
-		Student student = new Student();
-		System.out.println( student );
-		
-//		Student.class.getClass().getDeclaredField( "name" ).set( student, Math.random() + "" );;
-//		student.getClass().getDeclaredField( "name" ).set( student, Math.random() + "" );;
-		System.out.println( student );
-		
-//		System.out.println( student.getClass().getDeclaredField( "name" ).get( student ) );
-		
-//		student.getClass().getDeclaredField( "name" ).set( student, Math.random() + "" );;
-		System.out.println( student );
-		
-//		Student.class.getClass().getDeclaredMethod( "setName", String.class ).invoke( student, Math.random() + "" );
-		student.getClass().getDeclaredMethod( "setName", String.class ).invoke( student, Math.random() + "" );
-		System.out.println( student );
-		
+
+		String line = "\r\n-----------------------------------------";
+
+		Object obj = new ClassT();
+		Class<?> cls = obj.getClass();
+		Field[] fields = cls.getDeclaredFields();
+
+		System.out.println(line);
+		for (Field field : fields) {
+			String f = field.getName();
+			System.out.print(f + ", ");
+		}
+
+		System.out.println(line);
+		for (Field field : fields) {
+			String f = field.getName();
+			System.out.print("#{" + f + "}, ");
+		}
+
+		System.out.println(line);
+		for (Field field : fields) {
+			String f = field.getName();
+			System.out.print("#{item." + f + "}, ");
+		}
+
+		System.out.println(line);
+		for (Field field : fields) {
+			String f = field.getName();
+			System.out.println("\t\t\t<if test=\"" + f + " != null and " + f + " != ''\"> AND " + f + " = #{" + f + "} </if>");
+		}
+
+		System.out.println(line);
+		for (Field field : fields) {
+			String f = field.getName();
+			System.out.println("\t\t\t<if test=\"" + f + " != null and " + f + " != ''\"> , " + f + " = #{" + f + "} </if>");
+		}
+
 	}
 
 }
 
-class Student {
-	private String name;
-
-	@Override
-	public String toString() {
-		return "Name: " + name;
-	}
-
-	/**
-	 * @return the name
-	 */
-	public final String getName() {
-		return name;
-	}
-
-	/**
-	 * @param name the name to set
-	 */
-	public final void setName( String name ) {
-		this.name = name;
-	}
+class ClassT {
 
 }
