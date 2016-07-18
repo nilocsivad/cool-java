@@ -45,6 +45,13 @@ public class _StartupInvoke_ {
 			String f = field.getName();
 			System.out.println("\t\t\t<if test=\"" + f + " != null and " + f + " != ''\"> , " + f + " = #{" + f + "} </if>");
 		}
+		
+		System.out.println(line);
+		String format = "<isNotEmpty prepend=\",\" property=\"%s\"> %s = #%s# </isNotEmpty>";
+		for (Field field : fields) {
+			String f = field.getName();
+			System.out.println(String.format("\t\t\t" + format, f, f, f));
+		}
 
 	}
 
