@@ -27,11 +27,29 @@ public class _StartupInvoke_ {
 			String f = field.getName();
 			System.out.print("#{" + f + "}, ");
 		}
+		
+		System.out.println(line);
+		for (Field field : fields) {
+			String f = field.getName();
+			System.out.print("#" + f + "#, ");
+		}
 
 		System.out.println(line);
 		for (Field field : fields) {
 			String f = field.getName();
 			System.out.print("#{item." + f + "}, ");
+		}
+		
+		System.out.println(line);
+		for (Field field : fields) {
+			String f = field.getName();
+			System.out.print("#list[]." + f + "#, ");
+		}
+		
+		System.out.println(line);
+		for (Field field : fields) {
+			String f = field.getName();
+			System.out.print("#array[]." + f + "#, ");
 		}
 
 		System.out.println(line);
