@@ -70,6 +70,13 @@ public class _StartupInvoke_ {
 			String f = field.getName();
 			System.out.println(String.format("\t\t\t" + format, f, f, f));
 		}
+		
+		System.out.println(line);
+		format = "<isNotEmpty prepend=\"AND\" property=\"obj.%s\"> %s = #obj.%s# </isNotEmpty>";
+		for (Field field : fields) {
+			String f = field.getName();
+			System.out.println(String.format("\t\t\t" + format, f, f, f));
+		}
 
 	}
 
