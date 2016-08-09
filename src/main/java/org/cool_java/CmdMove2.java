@@ -28,7 +28,7 @@ public class CmdMove2 {
 
 		File folder = new File(from);
 
-		String[] suffix = { ".bt.td", ".torrent" };
+		String[] suffix = { ".td", ".torrent" };
 		list4(folder, dest, suffix);
 		// move2(folder, dest, suffix, false);
 
