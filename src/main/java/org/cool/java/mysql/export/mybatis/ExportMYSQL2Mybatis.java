@@ -3,13 +3,10 @@
  */
 package org.cool.java.mysql.export.mybatis;
 
-import java.util.Properties;
-
-import org.apache.velocity.app.Velocity;
+import com.google.gson.Gson;
 
 /**
  * @author Colin
- *
  */
 public class ExportMYSQL2Mybatis {
 
@@ -27,20 +24,20 @@ public class ExportMYSQL2Mybatis {
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
-		PropertiesFolder first = new PropertiesFolder();
+		PropertiesWithFolder first = new PropertiesWithFolder();
 
-		String tempDir = System.getProperty("java.io.tmpdir");
-		Properties properties = new Properties();
-		properties.setProperty(Velocity.FILE_RESOURCE_LOADER_PATH, tempDir);
-		Velocity.init(properties);
+		// String tempDir = System.getProperty("java.io.tmpdir");
+		// Properties properties = new Properties();
+		// properties.setProperty(Velocity.FILE_RESOURCE_LOADER_PATH, tempDir);
+		// Velocity.init(properties);
 
 		/// 读取配置文件 ///
 		first.initProperties();
-		// instance.printProperties();
-		/// 创建文件夹 ///
-		first.initFolders();
-		/// 复制模版文件 ///
-		first.cpTemplate();
+		// first.printProperties();
+		// /// 创建文件夹 ///
+		// first.initFolders();
+		// /// 复制模版文件 ///
+		// first.cpTemplate();
 
 
 		// String folder =
@@ -56,6 +53,20 @@ public class ExportMYSQL2Mybatis {
 		// System.out.println(String.format(format, file.getName().substring(0,
 		// file.getName().lastIndexOf("."))));
 		// }
+
+
+		Gson gson = new Gson();
+
+
+		DBAndTable dbt = new DBAndTable(first);
+		dbt.getTables("").forEach(tb -> {
+			System.out.println(gson.toJson(tb));
+		});
+
+		// dbt.printTypeMap();
+
+
+
 
 	}
 

@@ -17,12 +17,12 @@ import org.apache.velocity.app.Velocity;
 /**
  * @author Colin
  */
-public class PropertiesFolder {
+public class PropertiesWithFolder {
 
 	/**
 	 * 
 	 */
-	public PropertiesFolder() {
+	public PropertiesWithFolder() {
 	}
 
 	String[] PKG_PROP = { "package_c", "package_request_base", "package_model", "package_api", "package_database", "package_iapi", "package_ref", "package_adapter", "package_util" };
@@ -30,13 +30,17 @@ public class PropertiesFolder {
 	String[] FOLDERS = new String[PKG_PROP.length];
 	String[] PKGS = new String[FOLDERS.length];
 
-	Properties P;
+	Properties prop;
 
 	String ROOT, PACKAGE, PACKAGE_FOLDER;
 
 	String PKG_FMT = "%s.%s";
 
-	public void validFolder(File... folders) {
+	public String get(String key) {
+		return prop.getProperty(key);
+	}
+
+	private void validFolder(File... folders) {
 		for (File folder : folders) {
 			if (!folder.exists() || folder.isFile()) {
 				folder.mkdirs();
@@ -44,7 +48,7 @@ public class PropertiesFolder {
 		}
 	}
 
-	int findIt(String[] arr, String it) {
+	private int findIt(String[] arr, String it) {
 		int index = 0;
 		for (int i = 0; i < arr.length; i++) {
 			if (it.equals(arr[i])) {
@@ -55,16 +59,26 @@ public class PropertiesFolder {
 		return index;
 	}
 
+	private Properties getProp() throws IOException {
+
+		if (prop == null) {
+
+			prop = new Properties();
+
+			InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("org/cool/java/mysql/export/mybatis/mysql2.properties");
+			prop.load(inputStream);
+			inputStream.close();
+		}
+
+		return prop;
+	}
+
 	public void initProperties() throws IOException {
 
-		P = P == null ? new Properties() : P;
+		this.getProp();
 
-		InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("org/cool/java/mysql/export/mybatis/package.properties");
-		P.load(inputStream);
-		inputStream.close();
-
-		ROOT = P.getProperty("ROOT_PATH", "E:\\tmp");
-		PACKAGE = P.getProperty("PATH_PACKAGE", "com.iamVip.it.v1");
+		ROOT = prop.getProperty("ROOT_PATH", "E:\\tmp");
+		PACKAGE = prop.getProperty("PATH_PACKAGE", "com.iamVip.it.v1");
 
 		File packFile = new File(ROOT, PACKAGE.replace(".", File.separator));
 		PACKAGE_FOLDER = packFile.getAbsolutePath();
@@ -73,18 +87,18 @@ public class PropertiesFolder {
 
 	}
 
-	public void printProperties() {
-		P.forEach((key, val) -> {
+	public void printProperties() throws IOException {
+		prop.forEach((key, val) -> {
 			System.out.println(key + " --> " + val);
 		});
 	}
 
-	public void initFolders() {
+	public void initFolders() throws IOException {
 
 		File[] folders = new File[KEY_PROP.length];
 
 		for (int i = 0; i < KEY_PROP.length; ++i) {
-			String val = P.getProperty(KEY_PROP[i]);
+			String val = prop.getProperty(KEY_PROP[i]);
 			String pk = String.format(PKG_FMT, PACKAGE, val);
 			PKGS[i] = pk;
 			FOLDERS[i] = ROOT + File.separator + pk.replace(".", File.separator);
@@ -97,18 +111,18 @@ public class PropertiesFolder {
 
 		String PREFIX = "PATH_PACKAGE_";
 
-		P.keySet().forEach(okey -> {
+		prop.keySet().forEach(okey -> {
 			String key = okey.toString();
 
 			if (key.startsWith(PREFIX)) {
-				String val = P.getProperty(key, "");
+				String val = prop.getProperty(key, "");
 				validFolder(new File(PACKAGE_FOLDER, val.replace(".", File.separator)));
 			}
 		});
 	}
 
 
-	String resource2temp(String res) throws IOException {
+	private String resource2temp(String res) throws IOException {
 		InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(res);
 
 		File tmp = File.createTempFile("Resource", ".vm");
@@ -139,13 +153,13 @@ public class PropertiesFolder {
 
 		String PREFIX = "TEMPLATE_", SUFFIX = "_TO";
 
-		for (Object okey : P.keySet()) {
+		for (Object okey : prop.keySet()) {
 			String key = okey.toString();
 
 			if (key.startsWith(PREFIX) && key.endsWith(SUFFIX)) {
 				String toName = key.substring(PREFIX.length(), key.lastIndexOf(SUFFIX));
 
-				String valKey = P.getProperty(key);
+				String valKey = prop.getProperty(key);
 				int index = findIt(KEY_PROP, valKey);
 				String toFolder = FOLDERS[index];
 
