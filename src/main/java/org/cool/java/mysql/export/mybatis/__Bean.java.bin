@@ -1,0 +1,65 @@
+/**
+ * 
+ */
+package ${package_model};
+
+/**
+ * ${comment} <br />
+ * Database table: ${table} <br />
+ * @author Colin
+ */
+public class ${bean} extends __Model {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * 
+	 */
+	public ${bean}() {
+	}
+
+
+#foreach( $itm in $cols )
+	/**
+	 * $itm.comment <br />
+	 * $itm.type ($itm.len) <br />
+	 * $itm.javaType <br />
+	 * nullable: $itm.canBeNull
+	 */
+	private $itm.javaType $itm.name; 
+#end
+	
+	
+	
+	
+#foreach( $gs in $cols )
+#set( $getName = "get" + $gs.methodName )
+	/**
+	 * $gs.comment <br />
+	 * $gs.type ($gs.len) <br />
+	 * $gs.javaType <br />
+	 * nullable: $gs.canBeNull <br />
+	 * @return the $gs.name
+	 */
+	public $gs.javaType $getName() {
+		return $gs.name;
+	}
+	
+#set( $setName = "set" + $gs.methodName )
+	/**
+	 * $gs.comment <br />
+	 * $gs.type ($gs.len) <br />
+	 * $gs.javaType <br />
+	 * nullable: $gs.canBeNull <br />
+	 * @param $gs.name the $gs.name to set
+	 */
+	public void $setName($gs.javaType $gs.name) {
+		this.$gs.name = $gs.name;
+	}
+	
+#end
+	
+}

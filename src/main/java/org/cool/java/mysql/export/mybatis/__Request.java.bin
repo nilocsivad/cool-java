@@ -3,6 +3,7 @@
  */
 package ${package_request_base};
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,7 +23,7 @@ public class __Request implements IAPP {
 	public __Request() {
 	}
 
-	public Map<String, Object> http(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public Map<String, Object> queryLimit(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>(3);
 		map.put(JSON_KEY, this.getClass().getName());
 		// map.put(JSON_RESULT_KEY, System.getenv());
@@ -45,12 +46,39 @@ public class __Request implements IAPP {
 		return map;
 	}
 
+	public <T> Map<String, Object> toMap(T obj, String fields) throws SecurityException, IllegalArgumentException, IllegalAccessException {
+		return this.toMap(obj, fields.split(","));
+	}
+
+	public <T> Map<String, Object> toMap(T obj, String... fields) throws SecurityException, IllegalArgumentException, IllegalAccessException {
+		Map<String, Object> map = new HashMap<String, Object>(fields.length + 1);
+		if (obj != null) {
+			Class<?> cls = obj.getClass();
+			for (String key : fields) {
+				key = key.trim();
+				try {
+					Field fd = cls.getDeclaredField(key);
+					if (fd != null) {
+						fd.setAccessible(true);
+						map.put(key, fd.get(obj));
+						fd.setAccessible(false);
+					}
+				}
+				catch (NoSuchFieldException e) {
+					map.put(key, "");
+					e.printStackTrace();
+				}
+			}
+		}
+		return map;
+	}
+
 	/**
 	 * @param request
 	 * @param find
 	 * @return
 	 */
-	protected String suffixURL(HttpServletRequest request, String find) {
+	protected String getSuffixOfURL(HttpServletRequest request, String find) {
 		String uri = request.getRequestURI();
 		return uri.substring(uri.indexOf(find) + find.length());
 	}

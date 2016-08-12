@@ -35,12 +35,14 @@ public abstract class __APIDefaultImpl<T> implements __IAPI<T> {
 	public int insert(T one) {
 		try {
 			return this.getDBApi().insert(one);
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 
 			if (TransactionAspectSupport.currentTransactionStatus().isNewTransaction()) {
 				TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-			} else {
+			}
+			else {
 				throw e;
 			}
 		}
@@ -56,12 +58,14 @@ public abstract class __APIDefaultImpl<T> implements __IAPI<T> {
 	public int inserts(List<T> list) {
 		try {
 			return this.getDBApi().inserts(list);
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 
 			if (TransactionAspectSupport.currentTransactionStatus().isNewTransaction()) {
 				TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-			} else {
+			}
+			else {
 				throw e;
 			}
 		}
@@ -77,12 +81,14 @@ public abstract class __APIDefaultImpl<T> implements __IAPI<T> {
 	public int deleteByKey(Object primaryKey) {
 		try {
 			return this.getDBApi().deleteByKey(primaryKey);
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 
 			if (TransactionAspectSupport.currentTransactionStatus().isNewTransaction()) {
 				TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-			} else {
+			}
+			else {
 				throw e;
 			}
 		}
@@ -98,12 +104,14 @@ public abstract class __APIDefaultImpl<T> implements __IAPI<T> {
 	public int deleteEq(T param) {
 		try {
 			return this.getDBApi().deleteEq(param);
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 
 			if (TransactionAspectSupport.currentTransactionStatus().isNewTransaction()) {
 				TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-			} else {
+			}
+			else {
 				throw e;
 			}
 		}
@@ -112,20 +120,21 @@ public abstract class __APIDefaultImpl<T> implements __IAPI<T> {
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.iamVip.HttpWebDB.logic.iapi.__IAPI#updateByKey(java.lang.Object,
-	 * java.lang.Object)
+	 * @see com.iamVip.HttpWebDB.logic.iapi.__IAPI#updateByKey(java.lang.Object, java.lang.Object)
 	 */
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public int updateByKey(Object primaryKey, T param) {
 		try {
 			return this.getDBApi().updateByKey(primaryKey, param);
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 
 			if (TransactionAspectSupport.currentTransactionStatus().isNewTransaction()) {
 				TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-			} else {
+			}
+			else {
 				throw e;
 			}
 		}
@@ -156,7 +165,16 @@ public abstract class __APIDefaultImpl<T> implements __IAPI<T> {
 	 */
 	@Override
 	public T queryByKey(Object primaryKey) {
-		return this.getDBApi().queryByKey(primaryKey);
+		return this.queryByKey("*", primaryKey);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.iamVip.HttpWebDB.logic.iapi.__IAPI#queryByKey(java.lang.String, java.lang.Object)
+	 */
+	@Override
+	public T queryByKey(String columns, Object primaryKey) {
+		return this.getDBApi().queryByKey(columns, primaryKey);
 	}
 
 	/*
@@ -188,9 +206,7 @@ public abstract class __APIDefaultImpl<T> implements __IAPI<T> {
 
 	/*
 	 * (non-Javadoc)
-	 * @see
-	 * com.iamVip.HttpWebDB.logic.iapi.__IAPI#queryLimit(com.iamVip.HttpWebDB.logic.
-	 * model.PageParam, java.lang.Object)
+	 * @see com.iamVip.HttpWebDB.logic.iapi.__IAPI#queryLimit(com.iamVip.HttpWebDB. logic. model.PageParam, java.lang.Object)
 	 */
 	@Override
 	public List<T> queryLimit(PageParam page, T param) {
@@ -203,12 +219,60 @@ public abstract class __APIDefaultImpl<T> implements __IAPI<T> {
 
 	/*
 	 * (non-Javadoc)
-	 * @see
-	 * com.iamVip.HttpWebDB.logic.iapi.__IAPI#queryLimitEq(com.iamVip.HttpWebDB.
-	 * logic.model.PageParam, java.lang.Object)
+	 * @see com.iamVip.HttpWebDB.logic.iapi.__IAPI#queryLimitEq(com.iamVip.HttpWebDB. logic.model.PageParam, java.lang.Object)
 	 */
 	@Override
 	public List<T> queryLimitEq(PageParam page, T param) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.iamVip.HttpWebDB.logic.iapi.__IAPI#queryEq(java.lang.String, java.lang.Object)
+	 */
+	@Override
+	public T queryEq(String columns, T param) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.iamVip.HttpWebDB.logic.iapi.__IAPI#queryMulti(java.lang.String, java.lang.Object)
+	 */
+	@Override
+	public List<T> queryMulti(String columns, T param) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.iamVip.HttpWebDB.logic.iapi.__IAPI#queryMultiEq(java.lang.String, java.lang.Object)
+	 */
+	@Override
+	public List<T> queryMultiEq(String columns, T param) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.iamVip.HttpWebDB.logic.iapi.__IAPI#queryLimit(java.lang.String, com.iamVip.HttpWebDB.rs.ref.PageParam, java.lang.Object)
+	 */
+	@Override
+	public List<T> queryLimit(String columns, PageParam page, T param) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.iamVip.HttpWebDB.logic.iapi.__IAPI#queryLimitEq(java.lang.String, com.iamVip.HttpWebDB.rs.ref.PageParam, java.lang.Object)
+	 */
+	@Override
+	public List<T> queryLimitEq(String columns, PageParam page, T param) {
 		// TODO Auto-generated method stub
 		return null;
 	}

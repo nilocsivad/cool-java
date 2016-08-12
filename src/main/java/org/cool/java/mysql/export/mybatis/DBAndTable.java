@@ -98,6 +98,8 @@ public class DBAndTable {
 
 	public TableDefine getColumns(TableDefine tbl) throws SQLException {
 
+
+
 		ResultSet rs = conn.getMetaData().getPrimaryKeys(null, null, tbl.name);
 
 		String primaryKey = null;
@@ -107,8 +109,28 @@ public class DBAndTable {
 			break;
 		}
 
-		String sql = String.format("SELECT * FROM %s LIMIT 0", tbl.name);
+
+
+
+
+		String sql = String.format("SHOW CREATE TABLE %s", tbl.name);
 		PreparedStatement stmt = conn.prepareStatement(sql);
+		rs = stmt.executeQuery();
+		while (rs.next()) {
+			String col = rs.getString(2);
+			String last = col.substring(col.lastIndexOf(")"));
+			int index = last.indexOf("COMMENT=");
+			if (index > 0) {
+				tbl.comment = last.substring(index + 8).replace("'", "");
+			}
+		}
+
+
+
+
+
+		sql = String.format("SELECT * FROM %s LIMIT 0", tbl.name);
+		stmt = conn.prepareStatement(sql);
 
 		rs = stmt.executeQuery();
 		ResultSetMetaData md = rs.getMetaData();
@@ -125,11 +147,30 @@ public class DBAndTable {
 			col.javaType = md.getColumnClassName(i).replace("java.lang.", "");
 			col.isAutoIncrement = md.isAutoIncrement(i);
 			col.isPrimayKey = (primaryKey != null && primaryKey.equals(col.name));
-			col.isCanBeNull = md.isNullable(i) == 1 ? true : false;
+			col.canBeNull = md.isNullable(i) == 1 ? true : false;
 			col.len = md.getColumnDisplaySize(i);
 			cols.add(col);
 
 		}
+
+
+
+
+
+		sql = String.format("SHOW FULL COLUMNS FROM %s", tbl.name);
+		stmt = conn.prepareStatement(sql);
+		rs = stmt.executeQuery();
+		while (rs.next()) {
+			String col = rs.getString(1);
+			for (ColumnDefine cd : cols) {
+				if (col.equals(cd.name)) {
+					cd.comment = rs.getString(9);
+					break;
+				}
+			}
+		}
+
+
 
 		tbl.primaryKey = primaryKey;
 		tbl.columns = cols;

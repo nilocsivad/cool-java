@@ -35,7 +35,16 @@ public interface __IAPI<T> {
 	 */
 	long queryCountEq(T param);
 
+	/**
+	 * 查询单个
+	 */
 	T queryByKey(Object primaryKey);
+
+	/**
+	 * 查询单个
+	 * @param columns 要查询的列
+	 */
+	T queryByKey(String columns, Object primaryKey);
 
 	/**
 	 * 查询单个 String = ${String}
@@ -43,9 +52,21 @@ public interface __IAPI<T> {
 	T queryEq(T param);
 
 	/**
+	 * 查询单个 String = ${String}
+	 * @param columns 要查询的列
+	 */
+	T queryEq(String columns, T param);
+
+	/**
 	 * 查询多个 String LIKE CONCAT( '%', '${String}', '%' )
 	 */
 	List<T> queryMulti(T param);
+
+	/**
+	 * 查询多个 String LIKE CONCAT( '%', '${String}', '%' )
+	 * @param columns 要查询的列
+	 */
+	List<T> queryMulti(String columns, T param);
 
 	/**
 	 * 查询多个 String = ${String}
@@ -53,13 +74,28 @@ public interface __IAPI<T> {
 	List<T> queryMultiEq(T param);
 
 	/**
+	 * 查询多个 String = ${String}
+	 */
+	List<T> queryMultiEq(String columns, T param);
+
+	/**
 	 * 分页查询 String LIKE CONCAT( '%', '${String}', '%' )
 	 */
 	List<T> queryLimit(PageParam page, T param);
 
 	/**
+	 * 分页查询 String LIKE CONCAT( '%', '${String}', '%' )
+	 */
+	List<T> queryLimit(String columns, PageParam page, T param);
+
+	/**
 	 * 分页查询 String = ${String}
 	 */
 	List<T> queryLimitEq(PageParam page, T param);
+
+	/**
+	 * 分页查询 String = ${String}
+	 */
+	List<T> queryLimitEq(String columns, PageParam page, T param);
 
 }
