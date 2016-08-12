@@ -3,10 +3,10 @@
  */
 package org.cool.java.mysql.export.mybatis;
 
+import java.io.File;
+import java.io.InputStream;
 import java.util.List;
-import java.util.Properties;
 
-import org.apache.velocity.app.Velocity;
 import org.cool.java.mysql.export.mybatis.TableDefine.ITableBeanName;
 
 import com.google.gson.Gson;
@@ -14,15 +14,23 @@ import com.google.gson.Gson;
 /**
  * @author Colin
  */
-public class ExportMYSQL2Mybatis {
+public class Table2Mybatis {
 
 	/**
 	 * 
 	 */
-	public ExportMYSQL2Mybatis() {
+	public Table2Mybatis() {
 	}
 
 
+	public static void mainw(String[] args) {
+		File folder = new File("E:/javadb/space-java2", "/cool-java/src/main/resources/template");
+		for (File f : folder.listFiles()) {
+			String p = f.getParent();
+			String name = f.getName().replace(".bin", ".vm");
+			f.renameTo(new File(p, name));
+		}
+	}
 
 
 	/**
@@ -30,20 +38,29 @@ public class ExportMYSQL2Mybatis {
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
-		ExportMYSQL2Mybatis run = new ExportMYSQL2Mybatis();
+		Table2Mybatis run = new Table2Mybatis();
 
-
+		// ClassLoader cl = run.getClass().getClassLoader();
+		// URL url = cl.getResource("template/IAPP.java.bin");
+		// System.out.println(url.getFile());
+		// File f = new File(url.getFile());
+		// System.out.println(f.getAbsolutePath());
+		// System.out.format("length of file is %d \r\n", f.length());
+		// System.out.printf("length of file is %d \r\n", f.length());
 
 
 		PropertiesWithFolder first = new PropertiesWithFolder();
 
-		String tempDir = System.getProperty("java.io.tmpdir");
-		Properties properties = new Properties();
-		properties.setProperty(Velocity.FILE_RESOURCE_LOADER_PATH, tempDir);
-		Velocity.init(properties);
+		// String tempDir = System.getProperty("java.io.tmpdir");
+		// Properties properties = new Properties();
+		// properties.setProperty(Velocity.FILE_RESOURCE_LOADER_PATH, tempDir);
+		// Velocity.init(properties);
 
-		/// 读取配置文件 ///
-		first.initProperties();
+		/// 读取配置文件并初始化 ///
+		InputStream in = run.getClass().getClassLoader().getResourceAsStream("table2.properties");
+		first.initProperties(in);
+		in.close();
+
 		// first.printProperties();
 		/// 创建文件夹 ///
 		first.initFolders();
@@ -60,13 +77,21 @@ public class ExportMYSQL2Mybatis {
 
 
 
+		ITableBeanName rule = run.new NameRuleNoUnderline();
 		List<TableDefine> list = dbt.getTables("sale_detail", "group_man");
 		/// 生成 Bean ///
-		first.toModel(list, run.new NameRuleQTUnderline());
+		first.toModel(list, rule);
 
+		// ITableBeanName rule = run.new NameRuleHTUnderline();
 		// List<TableDefine> list = dbt.getTables("ht_sale_number");
 		// /// 生成 Bean ///
-		// first.toModel(list, run.new NameRuleHTUnderline());
+		// first.toModel(list, rule);
+
+
+
+		first.toIDB(list, rule);
+		first.toInterface(list, rule);
+
 
 
 		list.forEach(tb -> {
@@ -80,7 +105,7 @@ public class ExportMYSQL2Mybatis {
 
 
 
-	class NameRuleUnderline implements ITableBeanName {
+	class NameRuleNoUnderline implements ITableBeanName {
 
 		private String zeroToUpper(String str) {
 			return (str.charAt(0) + "").toUpperCase() + str.substring(1).toLowerCase();
@@ -97,37 +122,12 @@ public class ExportMYSQL2Mybatis {
 			for (String str : arr) {
 				buf.append(zeroToUpper(str));
 			}
-			buf.append("Model");
 			return buf.toString();
 		}
 
 	}
 
-	class NameRuleQTUnderline implements ITableBeanName {
-
-		private String zeroToUpper(String str) {
-			return (str.charAt(0) + "").toUpperCase() + str.substring(1).toLowerCase();
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * @see org.cool.java.mysql.export.mybatis.TableDefine.ITableBeanName#translateIt(java.lang.String)
-		 */
-		@Override
-		public String translateIt(String tableName) {
-			String[] arr = tableName.split("_");
-			StringBuffer buf = new StringBuffer(tableName.length() + 8);
-			buf.append("$");
-			for (String str : arr) {
-				buf.append(zeroToUpper(str));
-			}
-			buf.append("Model");
-			return buf.toString();
-		}
-
-	}
-
-	class NameRuleHTUnderline implements ITableBeanName {
+	class NameRuleHTNoUnderline implements ITableBeanName {
 
 		private String zeroToUpper(String str) {
 			return (str.charAt(0) + "").toUpperCase() + str.substring(1).toLowerCase();
@@ -142,11 +142,9 @@ public class ExportMYSQL2Mybatis {
 			tableName = tableName.replace("ht_", "");
 			String[] arr = tableName.split("_");
 			StringBuffer buf = new StringBuffer(tableName.length() + 8);
-			buf.append("_");
 			for (String str : arr) {
 				buf.append(zeroToUpper(str));
 			}
-			buf.append("Model");
 			return buf.toString();
 		}
 

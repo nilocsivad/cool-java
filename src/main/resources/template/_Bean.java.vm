@@ -8,7 +8,7 @@ package ${package_model};
  * Database table: ${table} <br />
  * @author Colin
  */
-public class ${bean} extends __Model {
+public class ${bean}Model extends __Model {
 
 	/**
 	 * 
@@ -18,7 +18,7 @@ public class ${bean} extends __Model {
 	/**
 	 * 
 	 */
-	public ${bean}() {
+	public ${bean}Model() {
 	}
 
 

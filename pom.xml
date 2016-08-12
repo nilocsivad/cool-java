@@ -6,7 +6,7 @@
 	<packaging>war</packaging>
 	<version>1.0.1-SNAPSHOT</version>
 	<name>cool-java Maven Webapp</name>
-	<url>http://maven.apache.org</url>
+	<url>http://repo.maven.apache.org/maven2</url>
 
 	<dependencies>
 		<dependency>
@@ -74,9 +74,9 @@
 		</dependency>
 
 		<dependency>
-			<groupId>velocity</groupId>
+			<groupId>org.apache.velocity</groupId>
 			<artifactId>velocity</artifactId>
-			<version>1.5</version>
+			<version>1.7</version>
 			<scope>runtime</scope>
 		</dependency>
 

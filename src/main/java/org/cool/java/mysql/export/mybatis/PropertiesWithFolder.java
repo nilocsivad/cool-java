@@ -4,10 +4,10 @@
 package org.cool.java.mysql.export.mybatis;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.List;
 import java.util.Properties;
 
@@ -66,23 +66,17 @@ public class PropertiesWithFolder {
 		return index;
 	}
 
-	private Properties getProp() throws IOException {
-
+	private Properties getProp(InputStream in) throws IOException {
 		if (prop == null) {
-
 			prop = new Properties();
-
-			InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("org/cool/java/mysql/export/mybatis/mysql2.properties");
-			prop.load(inputStream);
-			inputStream.close();
+			prop.load(in);
 		}
-
 		return prop;
 	}
 
-	public void initProperties() throws IOException {
+	public void initProperties(InputStream in) throws IOException {
 
-		this.getProp();
+		this.getProp(in);
 
 
 
@@ -107,6 +101,12 @@ public class PropertiesWithFolder {
 
 
 		validFolder(new File(PROJ_ROOT), packFile, configFile);
+
+
+
+		Properties properties = new Properties();
+		properties.setProperty(Velocity.FILE_RESOURCE_LOADER_PATH, resource2temp("."));
+		Velocity.init(properties);
 
 	}
 
@@ -157,22 +157,31 @@ public class PropertiesWithFolder {
 		});
 	}
 
+	// private int iii = 0;
 
 	private String resource2temp(String res) throws IOException {
-		InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(res);
+		// InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(res);
+		//
+		// File tmp = File.createTempFile("Resource", ".vm");
+		// FileOutputStream outputStream = new FileOutputStream(tmp);
+		//
+		// byte[] buf = new byte[1024 * 100];
+		// int len = 0;
+		// while ((len = inputStream.read(buf)) > 0) {
+		// outputStream.write(buf, 0, len);
+		// }
+		// inputStream.close();
+		// outputStream.close();
+		// return tmp.getName();
 
-		File tmp = File.createTempFile("Resource", ".vm");
-		FileOutputStream outputStream = new FileOutputStream(tmp);
-
-		byte[] buf = new byte[1024 * 100];
-		int len = 0;
-		while ((len = inputStream.read(buf)) > 0) {
-			outputStream.write(buf, 0, len);
-		}
-		inputStream.close();
-		outputStream.close();
-
-		return tmp.getName();
+		ClassLoader cl = this.getClass().getClassLoader();
+		URL url = cl.getResource(res);
+		// ++iii;
+		// if (iii == 14) {
+		// System.out.println(url.getPath());
+		// }
+		File f = new File(url.getPath());
+		return f.getAbsolutePath();
 	}
 
 	public void cpTemplate() throws Exception {
@@ -183,8 +192,8 @@ public class PropertiesWithFolder {
 			context.put(KEY_VELOCITY[i], PKG_CLASS[i]);
 		}
 
-		String pkg = this.getClass().getName();
-		pkg = pkg.substring(0, pkg.lastIndexOf("."));
+		// String pkg = this.getClass().getName();
+		// pkg = pkg.substring(0, pkg.lastIndexOf("."));
 
 
 		String PREFIX = "TEMPLATE_", SUFFIX = "_TO";
@@ -199,19 +208,29 @@ public class PropertiesWithFolder {
 				int index = findIt(KEY_PROP, valKey);
 				String toFolder = PKG_FOLDER[index];
 
-				String templatePath = resource2temp(pkg.replace(".", "/") + "/" + toName + ".bin");
-				Template template = Velocity.getTemplate(templatePath, "UTF-8");
+				// String templatePath = resource2temp(pkg.replace(".", "/") + "/" + toName + ".bin");
+				String templatePath = "template/" + toName + ".vm"; // resource2temp("template/" + toName.replace("_", "") + ".vm"); // resource2temp("template/" + toName + ".bin");
 
-				File toFile = new File(toFolder, toName);
-				FileWriter writer = new FileWriter(toFile);
+				if (Velocity.resourceExists(templatePath)) {
 
-				template.merge(context, writer);
+					Template template = Velocity.getTemplate(templatePath, "UTF-8");
 
-				writer.close();
+					File toFile = new File(toFolder, toName);
+					FileWriter writer = new FileWriter(toFile);
+
+					template.merge(context, writer);
+
+					writer.close();
+				}
+				else {
+					System.err.format("Can't find resource '%s'. \r\n", templatePath);
+				}
 
 			}
 		}
 	}
+
+
 
 	/**
 	 * @param list
@@ -220,42 +239,202 @@ public class PropertiesWithFolder {
 	 */
 	public void toModel(List<TableDefine> list, ITableBeanName rule) throws Exception {
 
-		int index = findIt(KEY_PROP, "PATH_PACKAGE_MODEL");
-		String toFolder = PKG_FOLDER[index];
-		String package_model = PKG_CLASS[index];
+		// String pkg = this.getClass().getName();
+		// pkg = pkg.substring(0, pkg.lastIndexOf("."));
+		// String templatePath = resource2temp(pkg.replace(".", "/") + "/__Bean.java.bin");
 
+		String templatePath = "template/" + "_Bean.java.vm"; // resource2temp("template/Bean.java.vm");
 
+		if (Velocity.resourceExists(templatePath)) {
+			
+			int index = findIt(KEY_PROP, "PATH_PACKAGE_MODEL");
+			String toFolder = PKG_FOLDER[index];
+			String package_model = PKG_CLASS[index];
+			
+			Template template = Velocity.getTemplate(templatePath, "UTF-8");
 
+			VelocityContext context = new VelocityContext();
+			context.put("package_model", package_model);
 
-		VelocityContext context = new VelocityContext();
-		context.put("package_model", package_model);
+			for (TableDefine td : list) {
 
-		String pkg = this.getClass().getName();
-		pkg = pkg.substring(0, pkg.lastIndexOf("."));
+				String bean = rule != null ? rule.translateIt(td.name) : td.name;
+				File toFile = new File(toFolder, bean + "Model.java");
 
-		String templatePath = resource2temp(pkg.replace(".", "/") + "/__Bean.java.bin");
-		Template template = Velocity.getTemplate(templatePath, "UTF-8");
+				context.put("comment", td.comment == null ? "" : td.comment);
+				context.put("table", td.name);
+				context.put("bean", bean);
+				context.put("cols", td.columns);
 
+				FileWriter writer = new FileWriter(toFile);
 
+				template.merge(context, writer);
 
+				writer.close();
 
-		for (TableDefine td : list) {
-
-			String bean = rule != null ? rule.translateIt(td.name) : td.name;
-			File toFile = new File(toFolder, bean + ".java");
-
-			context.put("comment", td.comment == null ? "" : td.comment);
-			context.put("table", td.name);
-			context.put("bean", bean);
-			context.put("cols", td.columns);
-
-			FileWriter writer = new FileWriter(toFile);
-
-			template.merge(context, writer);
-
-			writer.close();
-
+			}
+			
 		}
+		else {
+			System.err.format("Can't find resource '%s'. \r\n", templatePath);
+		}
+
+	}
+
+	/**
+	 * @param list
+	 * @param rule
+	 * @throws Exception
+	 */
+	public void toIDB(List<TableDefine> list, ITableBeanName rule) throws Exception {
+		
+		String templatePath = "template/" + "_IDBAPI.java.vm";
+
+		if (Velocity.resourceExists(templatePath)) {
+			
+			int index = findIt(KEY_PROP, "PATH_PACKAGE_DATABASE");
+			String toFolder = PKG_FOLDER[index];
+			String package_database = PKG_CLASS[index];
+			
+			index = findIt(KEY_PROP, "PATH_PACKAGE_MODEL");
+			String package_model = PKG_CLASS[index];
+			
+			Template template = Velocity.getTemplate(templatePath, "UTF-8");
+			
+			VelocityContext context = new VelocityContext();
+			context.put("package_database", package_database);
+			context.put("package_model", package_model);
+
+			for (TableDefine td : list) {
+
+				String bean = rule != null ? rule.translateIt(td.name) : td.name;
+				File toFile = new File(toFolder, "I" + bean + "DBApi.java");
+
+				context.put("comment", td.comment == null ? "" : td.comment);
+				context.put("table", td.name);
+				context.put("bean", bean);
+
+				FileWriter writer = new FileWriter(toFile);
+
+				template.merge(context, writer);
+
+				writer.close();
+
+			}
+			
+		}
+		else {
+			System.err.format("Can't find resource '%s'. \r\n", templatePath);
+		}
+
+	}
+	
+	/**
+	 * @param list
+	 * @param rule
+	 * @throws Exception
+	 */
+	public void toInterface(List<TableDefine> list, ITableBeanName rule) throws Exception {
+		
+		String templatePath = "template/" + "_IAPI.java.vm";
+		
+		if (Velocity.resourceExists(templatePath)) {
+			
+			int index = findIt(KEY_PROP, "PATH_PACKAGE_IAPI");
+			String toFolder = PKG_FOLDER[index];
+			String package_iapi = PKG_CLASS[index];
+			
+			index = findIt(KEY_PROP, "PATH_PACKAGE_MODEL");
+			String package_model = PKG_CLASS[index];
+			
+			index = findIt(KEY_PROP, "PATH_PACKAGE_DATABASE");
+			String package_database = PKG_CLASS[index];
+			
+			Template template = Velocity.getTemplate(templatePath, "UTF-8");
+			
+			VelocityContext context = new VelocityContext();
+			context.put("package_iapi", package_iapi);
+			context.put("package_model", package_model);
+			context.put("package_database", package_database);
+			
+			for (TableDefine td : list) {
+				
+				String bean = rule != null ? rule.translateIt(td.name) : td.name;
+				File toFile = new File(toFolder, "I" + bean + "Api.java");
+				
+				context.put("comment", td.comment == null ? "" : td.comment);
+				context.put("table", td.name);
+				context.put("bean", bean);
+				
+				FileWriter writer = new FileWriter(toFile);
+				
+				template.merge(context, writer);
+				
+				writer.close();
+				
+			}
+			
+		}
+		else {
+			System.err.format("Can't find resource '%s'. \r\n", templatePath);
+		}
+		
+	}
+	
+	/**
+	 * @param list
+	 * @param rule
+	 * @throws Exception
+	 */
+	public void toImplement(List<TableDefine> list, ITableBeanName rule) throws Exception {
+		
+		String templatePath = "template/" + "_IAPI.java.vm";
+		
+		if (Velocity.resourceExists(templatePath)) {
+			
+			int index = findIt(KEY_PROP, "PATH_PACKAGE_IAPI");
+			String toFolder = PKG_FOLDER[index];
+			String package_iapi = PKG_CLASS[index];
+			
+			index = findIt(KEY_PROP, "PATH_PACKAGE_MODEL");
+			String package_model = PKG_CLASS[index];
+			
+			Template template = Velocity.getTemplate(templatePath, "UTF-8");
+			
+			VelocityContext context = new VelocityContext();
+			context.put("package_iapi", package_iapi);
+			context.put("package_model", package_model);
+			
+			for (TableDefine td : list) {
+				
+				String bean = rule != null ? rule.translateIt(td.name) : td.name;
+				File toFile = new File(toFolder, "I" + bean + "Api.java");
+				
+				context.put("comment", td.comment == null ? "" : td.comment);
+				context.put("table", td.name);
+				context.put("bean", bean);
+				
+				FileWriter writer = new FileWriter(toFile);
+				
+				template.merge(context, writer);
+				
+				writer.close();
+				
+			}
+			
+		}
+		else {
+			System.err.format("Can't find resource '%s'. \r\n", templatePath);
+		}
+		
+	}
+
+	/**
+	 * @param list
+	 * @param rule
+	 * @throws Exception
+	 */
+	public void toXML(List<TableDefine> list, ITableBeanName rule) throws Exception {
 
 	}
 
