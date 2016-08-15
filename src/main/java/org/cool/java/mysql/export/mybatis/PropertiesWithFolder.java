@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
@@ -49,6 +50,7 @@ public class PropertiesWithFolder {
 
 	private void validFolder(File... folders) {
 		for (File folder : folders) {
+			System.out.println(folder.getAbsolutePath());
 			if (!folder.exists() || folder.isFile()) {
 				folder.mkdirs();
 			}
@@ -128,7 +130,7 @@ public class PropertiesWithFolder {
 			folders[i] = new File(PKG_FOLDER[i]);
 		}
 
-		validFolder(folders);
+		validFolder(Arrays.copyOfRange(folders, 0, KEY_VELOCITY.length));
 
 
 

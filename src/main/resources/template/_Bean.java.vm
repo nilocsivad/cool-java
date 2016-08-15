@@ -15,6 +15,19 @@ public class ${bean}Model extends __Model {
 	 */
 	private static final long serialVersionUID = 1L;
 
+
+#foreach( $itm in $cols )
+	/**
+	 * $itm.comment <br />
+	 * $itm.type ($itm.len) <br />
+	 * $itm.javaType <br />
+	 * nullable: $itm.canBeNull
+	 */
+	public static final String $itm.ConstName = "$itm.name";
+	
+#end
+
+
 	/**
 	 * 
 	 */

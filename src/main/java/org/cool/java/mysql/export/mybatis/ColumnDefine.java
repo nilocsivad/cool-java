@@ -34,6 +34,13 @@ public class ColumnDefine {
 	}
 
 	/**
+	 * @return the name
+	 */
+	public String getConstName() {
+		return name.toUpperCase();
+	}
+
+	/**
 	 * @return the methodName
 	 */
 	public String getMethodName() {
