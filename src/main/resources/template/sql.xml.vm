@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- ${package_model}.${bean}Model -->
+<mapper namespace="${package_database}.I${bean}DBApi">
+
+	<sql id="TABLE_NAME"> ${table} </sql>
+	<parameterMap type="${package_model}.${bean}Model" id="${bean}Model"></parameterMap>
+	<resultMap type="${package_model}.${bean}Model" id="${bean}ModelMap" autoMapping="true"></resultMap>
+
+
+
+	<insert id="insert" parameterMap="${bean}Model" keyProperty="clientID" keyColumn="clientID" useGeneratedKeys="true">
+		INSERT INTO
+		<include refid="TABLE_NAME" />
+		( loginName, password, clientID, type, dateTime, status )
+		VALUES
+		( #{loginName}, #{password}, #{clientID}, #{type}, #{dateTime}, #{status} )
+	</insert>
+
+
+
+	<update id="updateByKey">
+		UPDATE
+		<include refid="TABLE_NAME" />
+		SET
+		<trim prefixOverrides=",">
+			<if test="password != null and password != ''"> , password = #{password} </if>
+			<if test="clientID != null and clientID != ''"> , clientID = #{clientID} </if>
+			<if test="type != null and type != ''"> , type = #{type} </if>
+			<if test="dateTime != null and dateTime != ''"> , dateTime = #{dateTime} </if>
+			<if test="status != null and status != ''"> , status = #{status} </if>
+		</trim>
+		WHERE loginName = #{primaryKey}
+	</update>
+
+
+
+	<select id="queryCount" resultType="java.lang.Long">
+		SELECT COUNT(*) FROM
+		<include refid="TABLE_NAME" />
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="clientID != null and clientID != ''"> AND clientID = #{clientID} </if>
+			<if test="type != null and type != ''"> AND type = #{type} </if>
+			<if test="dateTime != null and dateTime != ''"> AND dateTime = #{dateTime} </if>
+			<if test="status != null and status != ''"> AND status = #{status} </if>
+		</trim>
+	</select>
+
+
+
+</mapper>

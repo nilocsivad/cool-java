@@ -91,8 +91,9 @@ public class Table2Mybatis {
 
 		first.toIDB(list, rule);
 		first.toInterface(list, rule);
+		first.toImplement(list, rule);
 
-
+		
 
 		list.forEach(tb -> {
 			System.out.println(gson.toJson(tb));

@@ -12,6 +12,8 @@ import ${package_iapi}.I${bean}Api;
 import ${package_model}.${bean}Model;
 
 /**
+ * ${comment} <br />
+ * Database table: ${table} <br />
  * @author Colin
  */
 @Service
