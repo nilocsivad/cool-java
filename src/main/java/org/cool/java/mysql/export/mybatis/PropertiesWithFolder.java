@@ -31,9 +31,12 @@ public class PropertiesWithFolder {
 	}
 
 	private String[] KEY_VELOCITY = { "package_c", "package_request_base", "package_model", "package_api", "package_database", "package_iapi", "package_ref", "package_adapter", "package_util" };
-	private String[] KEY_PROP = { "PATH_PACKAGE_C", "PATH_PACKAGE_REQUEST", "PATH_PACKAGE_MODEL", "PATH_PACKAGE_API", "PATH_PACKAGE_DATABASE", "PATH_PACKAGE_IAPI", "PATH_PACKAGE_REF", "PATH_PACKAGE_ADAPTER", "PATH_PACKAGE_UTIL", "FOLDER_CONFIG_MYBATIS" };
+	private String[] KEY_PROP = { "PATH_PACKAGE_C", "PATH_PACKAGE_REQUEST", "PATH_PACKAGE_MODEL", "PATH_PACKAGE_API", "PATH_PACKAGE_DATABASE", "PATH_PACKAGE_IAPI", "PATH_PACKAGE_REF", "PATH_PACKAGE_ADAPTER", "PATH_PACKAGE_UTIL" };
 	private String[] PKG_FOLDER = new String[KEY_PROP.length];
 	private String[] PKG_CLASS = new String[PKG_FOLDER.length];
+
+	private String[] KEY_FOLDER = { "FOLDER_CONFIG_MYBATIS" };
+	private String[] VAL_FOLDER = new String[KEY_FOLDER.length];
 
 
 
@@ -119,44 +122,57 @@ public class PropertiesWithFolder {
 	}
 
 	public void initFolders() throws IOException {
+		{ /// prefix with "PATH_PACKAGE_" ///
+			File[] folders = new File[KEY_PROP.length];
 
-		File[] folders = new File[KEY_PROP.length];
+			for (int i = 0; i < KEY_PROP.length; ++i) {
+				String val = prop.getProperty(KEY_PROP[i]);
+				String pk = String.format(BASE_PACKAGE_CHILD_FMT, BASE_PACKAGE, val);
+				PKG_CLASS[i] = pk;
+				PKG_FOLDER[i] = PROJ_ROOT + File.separator + pk.replace(".", File.separator);
+				folders[i] = new File(PKG_FOLDER[i]);
+			}
 
-		for (int i = 0; i < KEY_PROP.length; ++i) {
-			String val = prop.getProperty(KEY_PROP[i]);
-			String pk = String.format(BASE_PACKAGE_CHILD_FMT, BASE_PACKAGE, val);
-			PKG_CLASS[i] = pk;
-			PKG_FOLDER[i] = PROJ_ROOT + File.separator + pk.replace(".", File.separator);
-			folders[i] = new File(PKG_FOLDER[i]);
+			validFolder(folders);
 		}
 
-		validFolder(Arrays.copyOfRange(folders, 0, KEY_VELOCITY.length));
+
+		// final String PATH_PREFIX = "PATH_PACKAGE_";
+		//
+		// prop.keySet().forEach(okey -> {
+		// String key = okey.toString();
+		//
+		// if (key.startsWith(PATH_PREFIX)) {
+		// String val = prop.getProperty(key, "");
+		// validFolder(new File(PACKAGE_FOLDER, val.replace(".", File.separator)));
+		// }
+		// });
 
 
 
-		final String PATH_PREFIX = "PATH_PACKAGE_";
+		{ /// prefix with "FOLDER_CONFIG_" ///
+			File[] folders = new File[KEY_FOLDER.length];
 
-		prop.keySet().forEach(okey -> {
-			String key = okey.toString();
-
-			if (key.startsWith(PATH_PREFIX)) {
-				String val = prop.getProperty(key, "");
-				validFolder(new File(PACKAGE_FOLDER, val.replace(".", File.separator)));
+			for (int i = 0; i < KEY_FOLDER.length; ++i) {
+				String val = prop.getProperty(KEY_FOLDER[i]);
+				VAL_FOLDER[i] = CONFIG_FOLDER + File.separator + val;
+				folders[i] = new File(VAL_FOLDER[i]);
 			}
-		});
+
+			validFolder(folders);
+		}
 
 
-
-		final String FOLDER_PREFIX = "FOLDER_CONFIG_";
-
-		prop.keySet().forEach(okey -> {
-			String key = okey.toString();
-
-			if (key.startsWith(FOLDER_PREFIX)) {
-				String val = prop.getProperty(key, "");
-				validFolder(new File(CONFIG_FOLDER, val));
-			}
-		});
+		// final String FOLDER_PREFIX = "FOLDER_CONFIG_";
+		//
+		// prop.keySet().forEach(okey -> {
+		// String key = okey.toString();
+		//
+		// if (key.startsWith(FOLDER_PREFIX)) {
+		// String val = prop.getProperty(key, "");
+		// validFolder(new File(CONFIG_FOLDER, val));
+		// }
+		// });
 	}
 
 	// private int iii = 0;
@@ -248,11 +264,11 @@ public class PropertiesWithFolder {
 		String templatePath = "template/" + "_Bean.java.vm"; // resource2temp("template/Bean.java.vm");
 
 		if (Velocity.resourceExists(templatePath)) {
-			
+
 			int index = findIt(KEY_PROP, "PATH_PACKAGE_MODEL");
 			String toFolder = PKG_FOLDER[index];
 			String package_model = PKG_CLASS[index];
-			
+
 			Template template = Velocity.getTemplate(templatePath, "UTF-8");
 
 			VelocityContext context = new VelocityContext();
@@ -275,7 +291,7 @@ public class PropertiesWithFolder {
 				writer.close();
 
 			}
-			
+
 		}
 		else {
 			System.err.format("Can't find resource '%s'. \r\n", templatePath);
@@ -289,20 +305,20 @@ public class PropertiesWithFolder {
 	 * @throws Exception
 	 */
 	public void toIDB(List<TableDefine> list, ITableBeanName rule) throws Exception {
-		
+
 		String templatePath = "template/" + "_IDBAPI.java.vm";
 
 		if (Velocity.resourceExists(templatePath)) {
-			
+
 			int index = findIt(KEY_PROP, "PATH_PACKAGE_DATABASE");
 			String toFolder = PKG_FOLDER[index];
 			String package_database = PKG_CLASS[index];
-			
+
 			index = findIt(KEY_PROP, "PATH_PACKAGE_MODEL");
 			String package_model = PKG_CLASS[index];
-			
+
 			Template template = Velocity.getTemplate(templatePath, "UTF-8");
-			
+
 			VelocityContext context = new VelocityContext();
 			context.put("package_database", package_database);
 			context.put("package_model", package_model);
@@ -323,120 +339,120 @@ public class PropertiesWithFolder {
 				writer.close();
 
 			}
-			
+
 		}
 		else {
 			System.err.format("Can't find resource '%s'. \r\n", templatePath);
 		}
 
 	}
-	
+
 	/**
 	 * @param list
 	 * @param rule
 	 * @throws Exception
 	 */
 	public void toInterface(List<TableDefine> list, ITableBeanName rule) throws Exception {
-		
+
 		String templatePath = "template/" + "_IAPI.java.vm";
-		
+
 		if (Velocity.resourceExists(templatePath)) {
-			
+
 			int index = findIt(KEY_PROP, "PATH_PACKAGE_IAPI");
 			String toFolder = PKG_FOLDER[index];
 			String package_iapi = PKG_CLASS[index];
-			
+
 			index = findIt(KEY_PROP, "PATH_PACKAGE_MODEL");
 			String package_model = PKG_CLASS[index];
-			
+
 			index = findIt(KEY_PROP, "PATH_PACKAGE_DATABASE");
 			String package_database = PKG_CLASS[index];
-			
+
 			Template template = Velocity.getTemplate(templatePath, "UTF-8");
-			
+
 			VelocityContext context = new VelocityContext();
 			context.put("package_iapi", package_iapi);
 			context.put("package_model", package_model);
 			context.put("package_database", package_database);
-			
+
 			for (TableDefine td : list) {
-				
+
 				String bean = rule != null ? rule.translateIt(td.name) : td.name;
 				File toFile = new File(toFolder, "I" + bean + "Api.java");
-				
+
 				context.put("comment", td.comment == null ? "" : td.comment);
 				context.put("table", td.name);
 				context.put("bean", bean);
-				
+
 				FileWriter writer = new FileWriter(toFile);
-				
+
 				template.merge(context, writer);
-				
+
 				writer.close();
-				
+
 			}
-			
+
 		}
 		else {
 			System.err.format("Can't find resource '%s'. \r\n", templatePath);
 		}
-		
+
 	}
-	
+
 	/**
 	 * @param list
 	 * @param rule
 	 * @throws Exception
 	 */
 	public void toImplement(List<TableDefine> list, ITableBeanName rule) throws Exception {
-		
+
 		String templatePath = "template/" + "_APIDefaultImpl.java.vm";
-		
+
 		if (Velocity.resourceExists(templatePath)) {
-			
+
 			int index = findIt(KEY_PROP, "PATH_PACKAGE_API");
 			String toFolder = PKG_FOLDER[index];
 			String package_api = PKG_CLASS[index];
-			
+
 			index = findIt(KEY_PROP, "PATH_PACKAGE_IAPI");
 			String package_iapi = PKG_CLASS[index];
-			
+
 			index = findIt(KEY_PROP, "PATH_PACKAGE_MODEL");
 			String package_model = PKG_CLASS[index];
-			
+
 			index = findIt(KEY_PROP, "PATH_PACKAGE_DATABASE");
 			String package_database = PKG_CLASS[index];
-			
+
 			Template template = Velocity.getTemplate(templatePath, "UTF-8");
-			
+
 			VelocityContext context = new VelocityContext();
 			context.put("package_api", package_api);
 			context.put("package_iapi", package_iapi);
 			context.put("package_model", package_model);
 			context.put("package_database", package_database);
-			
+
 			for (TableDefine td : list) {
-				
+
 				String bean = rule != null ? rule.translateIt(td.name) : td.name;
 				File toFile = new File(toFolder, bean + "ApiImpl.java");
-				
+
 				context.put("comment", td.comment == null ? "" : td.comment);
 				context.put("table", td.name);
 				context.put("bean", bean);
-				
+
 				FileWriter writer = new FileWriter(toFile);
-				
+
 				template.merge(context, writer);
-				
+
 				writer.close();
-				
+
 			}
-			
+
 		}
 		else {
 			System.err.format("Can't find resource '%s'. \r\n", templatePath);
 		}
-		
+
 	}
 
 	/**
@@ -445,48 +461,48 @@ public class PropertiesWithFolder {
 	 * @throws Exception
 	 */
 	public void toXML(List<TableDefine> list, ITableBeanName rule) throws Exception {
-		
+
 		String templatePath = "template/" + "sql.xml.vm";
-		
+
 		if (Velocity.resourceExists(templatePath)) {
-			
-			int index = findIt(KEY_PROP, "FOLDER_CONFIG_MYBATIS");
-			String toFolder = PKG_FOLDER[index];
-			
+
+			int index = findIt(KEY_FOLDER, "FOLDER_CONFIG_MYBATIS");
+			String toFolder = VAL_FOLDER[index];
+
 			index = findIt(KEY_PROP, "PATH_PACKAGE_MODEL");
 			String package_model = PKG_CLASS[index];
-			
+
 			index = findIt(KEY_PROP, "PATH_PACKAGE_DATABASE");
 			String package_database = PKG_CLASS[index];
-			
+
 			Template template = Velocity.getTemplate(templatePath, "UTF-8");
-			
+
 			VelocityContext context = new VelocityContext();
 			context.put("package_model", package_model);
 			context.put("package_database", package_database);
-			
+
 			for (TableDefine td : list) {
-				
+
 				String bean = rule != null ? rule.translateIt(td.name) : td.name;
-				File toFile = new File(toFolder, XML_PREFIX + td.name + "");
-				
+				File toFile = new File(toFolder, XML_PREFIX + td.name + ".xml");
+
 				context.put("comment", td.comment == null ? "" : td.comment);
 				context.put("table", td.name);
 				context.put("bean", bean);
-				
+
 				FileWriter writer = new FileWriter(toFile);
-				
+
 				template.merge(context, writer);
-				
+
 				writer.close();
-				
+
 			}
-			
+
 		}
 		else {
 			System.err.format("Can't find resource '%s'. \r\n", templatePath);
 		}
-		
+
 	}
 
 }
