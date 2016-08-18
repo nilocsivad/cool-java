@@ -23,6 +23,14 @@ public class Table2Mybatis {
 	}
 
 
+	public static void main3s(String[] args) {
+
+		String ttt = "sdfaodifjqopig";
+		System.out.println(ttt.substring(0, 50));
+
+	}
+
+
 	public static void mainw(String[] args) {
 		File folder = new File("E:/javadb/space-java2", "/cool-java/src/main/resources/template");
 		for (File f : folder.listFiles()) {
@@ -64,8 +72,8 @@ public class Table2Mybatis {
 		// first.printProperties();
 		/// 创建文件夹 ///
 		first.initFolders();
-//		/// 复制模版文件 ///
-//		first.cpTemplate();
+		/// 复制模版文件 ///
+		first.cpTemplate();
 
 
 
@@ -84,14 +92,14 @@ public class Table2Mybatis {
 
 
 
-//		/// 生成 Bean ///
-//		first.toModel(list, rule);
-//		/// 生成 DB 接口 ///
-//		first.toIDB(list, rule);
-//		/// 生成业务逻辑接口 ///
-//		first.toInterface(list, rule);
-//		/// 生成逻辑实现 ///
-//		first.toImplement(list, rule);
+		/// 生成 Bean ///
+		first.toModel(list, rule);
+		/// 生成 DB 接口 ///
+		first.toIDB(list, rule);
+		/// 生成业务逻辑接口 ///
+		first.toInterface(list, rule);
+		/// 生成逻辑实现 ///
+		first.toImplement(list, rule);
 		/// 生成 XML 文件 ///
 		first.toXML(list, rule);
 

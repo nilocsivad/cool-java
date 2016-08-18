@@ -24,6 +24,12 @@ public class ${bean}Model extends __Model {
 	 * nullable: $itm.canBeNull
 	 */
 	public static final String $itm.ConstName = "$itm.name";
+#if( $itm.javaType == "String" )
+	/**
+	 * length of $itm.comment
+	 */
+	public static final int ${itm.ConstName}_LEN = $itm.len;
+#end
 	
 #end
 
@@ -62,6 +68,7 @@ public class ${bean}Model extends __Model {
 	}
 	
 #set( $setName = "set" + $gs.methodName )
+#set( $subItem = "set" + $gs.methodName )
 	/**
 	 * $gs.comment <br />
 	 * $gs.type ($gs.len) <br />
@@ -70,7 +77,14 @@ public class ${bean}Model extends __Model {
 	 * @param $gs.name the $gs.name to set
 	 */
 	public void $setName($gs.javaType $gs.name) {
+#if( $gs.javaType == "String" )
+		if ($gs.name != null && !"".equals($gs.name) && ${gs.name}.length() > ${gs.ConstName}_LEN) {
+			$gs.name = ${gs.name}.substring(0, ${gs.ConstName}_LEN);
+		}
 		this.$gs.name = $gs.name;
+#else
+		this.$gs.name = $gs.name;
+#end
 	}
 	
 #end

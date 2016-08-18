@@ -103,4 +103,16 @@ public class ColumnDefine {
 		return comment;
 	}
 
+	public static final int COMMENT_LEN = 80;
+	
+	/**
+	 * @param comment the comment to set
+	 */
+	public void setComment(String comment) {
+		if (comment.length() >= COMMENT_LEN) {
+			comment = comment.substring(0, COMMENT_LEN - 1);
+		}
+		this.comment = comment;
+	}
+
 }
