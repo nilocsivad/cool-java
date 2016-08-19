@@ -280,6 +280,8 @@ public class PropertiesWithFolder {
 
 				context.put("comment", td.comment == null ? "" : td.comment);
 				context.put("table", td.name);
+				context.put("hasPrimaryKey", (td.primaryKey != null));
+				context.put("primaryKey", td.primaryKey);
 				context.put("bean", bean);
 				context.put("cols", td.columns);
 

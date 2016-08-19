@@ -19,7 +19,7 @@
 	</insert>
 
 
-
+#if( ${hasPrimaryKey} == true )
 	<update id="updateByKey">
 		UPDATE
 		<include refid="TABLE_NAME" />
@@ -31,9 +31,9 @@
 			<if test="dateTime != null and dateTime != ''"> , dateTime = #{dateTime} </if>
 			<if test="status != null and status != ''"> , status = #{status} </if>
 		</trim>
-		WHERE loginName = #{primaryKey}
+		WHERE ${primaryKey} = #{primaryKey}
 	</update>
-
+#end
 
 
 	<select id="queryCount" resultType="java.lang.Long">

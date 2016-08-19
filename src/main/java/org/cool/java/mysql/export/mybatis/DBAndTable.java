@@ -106,6 +106,7 @@ public class DBAndTable {
 
 		while (rs.next()) {
 			primaryKey = rs.getString(4);
+			tbl.primaryKey = primaryKey;
 			break;
 		}
 
