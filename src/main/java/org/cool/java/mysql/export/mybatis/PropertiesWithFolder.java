@@ -41,7 +41,7 @@ public class PropertiesWithFolder {
 
 	private Properties prop;
 
-	private String PROJ_ROOT, BASE_PACKAGE, PACKAGE_FOLDER, CONFIG_FOLDER;
+	private String PROJ_ROOT, BASE_PACKAGE, CONFIG_FOLDER;
 	private String XML_PREFIX;
 
 
@@ -93,8 +93,8 @@ public class PropertiesWithFolder {
 
 
 
-		File packFile = new File(PROJ_ROOT, BASE_PACKAGE.replace(".", File.separator));
-		PACKAGE_FOLDER = packFile.getAbsolutePath();
+		// File packFile = new File(PROJ_ROOT, BASE_PACKAGE.replace(".", File.separator));
+		// PACKAGE_FOLDER = packFile.getAbsolutePath();
 
 
 
@@ -104,7 +104,7 @@ public class PropertiesWithFolder {
 
 
 
-		validFolder(new File(PROJ_ROOT), packFile, configFile);
+		validFolder(new File(PROJ_ROOT), /* packFile, */configFile);
 
 
 
