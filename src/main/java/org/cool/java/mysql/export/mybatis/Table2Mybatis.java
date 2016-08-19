@@ -92,14 +92,14 @@ public class Table2Mybatis {
 
 
 
-		/// 生成 Bean ///
-		first.toModel(list, rule);
-		/// 生成 DB 接口 ///
-		first.toIDB(list, rule);
-		/// 生成业务逻辑接口 ///
-		first.toInterface(list, rule);
-		/// 生成逻辑实现 ///
-		first.toImplement(list, rule);
+		// /// 生成 Bean ///
+		// first.toModel(list, rule);
+		// /// 生成 DB 接口 ///
+		// first.toIDB(list, rule);
+		// /// 生成业务逻辑接口 ///
+		// first.toInterface(list, rule);
+		// /// 生成逻辑实现 ///
+		// first.toImplement(list, rule);
 		/// 生成 XML 文件 ///
 		first.toXML(list, rule);
 

@@ -280,8 +280,6 @@ public class PropertiesWithFolder {
 
 				context.put("comment", td.comment == null ? "" : td.comment);
 				context.put("table", td.name);
-				context.put("hasPrimaryKey", (td.primaryKey != null));
-				context.put("primaryKey", td.primaryKey);
 				context.put("bean", bean);
 				context.put("cols", td.columns);
 
@@ -487,8 +485,9 @@ public class PropertiesWithFolder {
 				String bean = rule != null ? rule.translateIt(td.name) : td.name;
 				File toFile = new File(toFolder, XML_PREFIX + td.name + ".xml");
 
-				context.put("comment", td.comment == null ? "" : td.comment);
-				context.put("table", td.name);
+				context.put("table", td);
+				context.put("hasPrimaryKey", (td.primaryKey != null));
+				context.put("primaryKey", td.primaryKey);
 				context.put("bean", bean);
 
 				FileWriter writer = new FileWriter(toFile);
