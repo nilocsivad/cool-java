@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.cool.java.mysql.export.mybatis;
+package org.cool.java.mysql.export;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

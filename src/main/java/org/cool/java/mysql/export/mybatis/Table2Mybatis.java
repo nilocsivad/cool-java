@@ -7,7 +7,9 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.List;
 
-import org.cool.java.mysql.export.mybatis.TableDefine.ITableBeanName;
+import org.cool.java.mysql.export.DBAndTable;
+import org.cool.java.mysql.export.TableDefine;
+import org.cool.java.mysql.export.TableDefine.ITableBeanName;
 
 import com.google.gson.Gson;
 
@@ -31,12 +33,14 @@ public class Table2Mybatis {
 	}
 
 
-	public static void mainw(String[] args) {
+	public static void main22(String[] args) {
 		File folder = new File("E:/javadb/space-java2", "/cool-java/src/main/resources/template");
 		for (File f : folder.listFiles()) {
-			String p = f.getParent();
-			String name = f.getName().replace(".bin", ".vm");
-			f.renameTo(new File(p, name));
+			String fn = f.getName();
+			if (fn.endsWith(".vm") && !fn.endsWith(".java.vm")) {
+				String name = fn.replace(".vm", ".java.vm");
+				f.renameTo(new File(folder, name));
+			}
 		}
 	}
 
@@ -57,7 +61,7 @@ public class Table2Mybatis {
 		// System.out.printf("length of file is %d \r\n", f.length());
 
 
-		PropertiesWithFolder first = new PropertiesWithFolder();
+		MyBatisPropertiesWithFolder first = new MyBatisPropertiesWithFolder();
 
 		// String tempDir = System.getProperty("java.io.tmpdir");
 		// Properties properties = new Properties();
@@ -65,7 +69,7 @@ public class Table2Mybatis {
 		// Velocity.init(properties);
 
 		/// 读取配置文件并初始化 ///
-		InputStream in = run.getClass().getClassLoader().getResourceAsStream("table2.properties");
+		InputStream in = run.getClass().getClassLoader().getResourceAsStream("table2-mybatis.properties");
 		first.initProperties(in);
 		in.close();
 
@@ -86,14 +90,14 @@ public class Table2Mybatis {
 
 
 		ITableBeanName rule = run.new NameRuleNoUnderline();
-		List<TableDefine> list = dbt.getTables("sale_detail", "group_man");
+		List<TableDefine> list = dbt.getTables("manager", "manager_code");
 		// ITableBeanName rule = run.new NameRuleHTUnderline();
 		// List<TableDefine> list = dbt.getTables("ht_sale_number");
 
 
 
-		// /// 生成 Bean ///
-		// first.toModel(list, rule);
+		/// 生成 Bean ///
+		first.toModel(list, rule);
 		// /// 生成 DB 接口 ///
 		// first.toIDB(list, rule);
 		// /// 生成业务逻辑接口 ///

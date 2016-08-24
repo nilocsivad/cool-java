@@ -3,6 +3,8 @@
  */
 package ${package_model};
 
+import java.lang.reflect.Field;
+
 /**
  * ${comment} <br />
  * Database table: ${table} <br />
@@ -23,12 +25,12 @@ public class ${bean}Model extends __Model {
 	 * $itm.javaType <br />
 	 * nullable: $itm.canBeNull
 	 */
-	public static final String $itm.ConstName = "$itm.name";
+	public static final String KEY_$itm.ConstName = "$itm.name";
 #if( $itm.javaType == "String" )
 	/**
 	 * length of $itm.comment
 	 */
-	public static final int ${itm.ConstName}_LEN = $itm.len;
+	public static final int LEN_${itm.ConstName} = $itm.len;
 #end
 	
 #end
@@ -51,6 +53,37 @@ public class ${bean}Model extends __Model {
 	private $itm.javaType $itm.name; 
 #end
 	
+	
+
+	public static ${bean}Model Make(String cols, Object... vals) {
+		return Make(cols.split(","), vals);
+	}
+	
+	public static ${bean}Model Make(String[] fields, Object... vals) {
+		${bean}Model instance = new ${bean}Model();
+		try {
+
+			Class<?> cls = instance.getClass();
+
+			for (int i = 0, l = fields.length; l > i; ++i) {
+				String field = fields[i].trim();
+				try {
+					Field fd = cls.getDeclaredField(field);
+					if (fd != null) {
+						fd.setAccessible(true);
+						fd.set(instance, vals[i]);
+						fd.setAccessible(false);
+					}
+				} catch (NoSuchFieldException e) {
+					e.printStackTrace();
+				}
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return instance;
+	}
 	
 	
 	
@@ -78,8 +111,8 @@ public class ${bean}Model extends __Model {
 	 */
 	public void $setName($gs.javaType $gs.name) {
 #if( $gs.javaType == "String" )
-		if ($gs.name != null && !"".equals($gs.name) && ${gs.name}.length() > ${gs.ConstName}_LEN) {
-			$gs.name = ${gs.name}.substring(0, ${gs.ConstName}_LEN);
+		if ($gs.name != null && !"".equals($gs.name) && ${gs.name}.length() > LEN_${gs.ConstName}) {
+			$gs.name = ${gs.name}.substring(0, LEN_${gs.ConstName});
 		}
 		this.$gs.name = $gs.name;
 #else

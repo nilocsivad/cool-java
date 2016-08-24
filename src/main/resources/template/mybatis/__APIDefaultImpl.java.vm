@@ -28,7 +28,7 @@ public abstract class __APIDefaultImpl<T> implements __IAPI<T> {
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.iamVip.HttpWebDB.logic.iapi.__IAPI#insert 
+	 * @see ${package_iapi}.__IAPI#insert 
 	 */
 	@Override
 	@Transactional(rollbackFor = Exception.class)
@@ -51,7 +51,7 @@ public abstract class __APIDefaultImpl<T> implements __IAPI<T> {
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.iamVip.HttpWebDB.logic.iapi.__IAPI#inserts 
+	 * @see ${package_iapi}.__IAPI#inserts 
 	 */
 	@Override
 	@Transactional(rollbackFor = Exception.class)
@@ -74,7 +74,7 @@ public abstract class __APIDefaultImpl<T> implements __IAPI<T> {
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.iamVip.HttpWebDB.logic.iapi.__IAPI#deleteByKey 
+	 * @see ${package_iapi}.__IAPI#deleteByKey 
 	 */
 	@Override
 	@Transactional(rollbackFor = Exception.class)
@@ -97,7 +97,7 @@ public abstract class __APIDefaultImpl<T> implements __IAPI<T> {
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.iamVip.HttpWebDB.logic.iapi.__IAPI#deleteEq 
+	 * @see ${package_iapi}.__IAPI#deleteEq 
 	 */
 	@Override
 	@Transactional(rollbackFor = Exception.class)
@@ -120,7 +120,7 @@ public abstract class __APIDefaultImpl<T> implements __IAPI<T> {
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.iamVip.HttpWebDB.logic.iapi.__IAPI#updateByKey 
+	 * @see ${package_iapi}.__IAPI#updateByKey 
 	 */
 	@Override
 	@Transactional(rollbackFor = Exception.class)
@@ -143,7 +143,7 @@ public abstract class __APIDefaultImpl<T> implements __IAPI<T> {
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.iamVip.HttpWebDB.logic.iapi.__IAPI#queryCount 
+	 * @see ${package_iapi}.__IAPI#queryCount 
 	 */
 	@Override
 	public long queryCount(T param) {
@@ -152,7 +152,7 @@ public abstract class __APIDefaultImpl<T> implements __IAPI<T> {
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.iamVip.HttpWebDB.logic.iapi.__IAPI#queryCountEq 
+	 * @see ${package_iapi}.__IAPI#queryCountEq 
 	 */
 	@Override
 	public long queryCountEq(T param) {
@@ -161,7 +161,7 @@ public abstract class __APIDefaultImpl<T> implements __IAPI<T> {
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.iamVip.HttpWebDB.logic.iapi.__IAPI#queryByKey 
+	 * @see ${package_iapi}.__IAPI#queryByKey 
 	 */
 	@Override
 	public T queryByKey(Object primaryKey) {
@@ -170,7 +170,7 @@ public abstract class __APIDefaultImpl<T> implements __IAPI<T> {
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.iamVip.HttpWebDB.logic.iapi.__IAPI#queryByKey 
+	 * @see ${package_iapi}.__IAPI#queryByKey 
 	 */
 	@Override
 	public T queryByKey(String columns, Object primaryKey) {
@@ -179,34 +179,34 @@ public abstract class __APIDefaultImpl<T> implements __IAPI<T> {
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.iamVip.HttpWebDB.logic.iapi.__IAPI#queryEq 
+	 * @see ${package_iapi}.__IAPI#queryEq 
 	 */
 	@Override
 	public T queryEq(T param) {
-		return this.getDBApi().queryEq(param);
+		return this.getDBApi().queryEq("*", param);
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.iamVip.HttpWebDB.logic.iapi.__IAPI#queryMulti 
+	 * @see ${package_iapi}.__IAPI#queryMulti 
 	 */
 	@Override
 	public List<T> queryMulti(T param) {
-		return this.getDBApi().queryMulti(param);
+		return this.getDBApi().queryMulti("*", param);
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.iamVip.HttpWebDB.logic.iapi.__IAPI#queryMultiEq 
+	 * @see ${package_iapi}.__IAPI#queryMultiEq 
 	 */
 	@Override
 	public List<T> queryMultiEq(T param) {
-		return this.getDBApi().queryMultiEq(param);
+		return this.getDBApi().queryMultiEq("*", param);
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.iamVip.HttpWebDB.logic.iapi.__IAPI#queryLimit
+	 * @see ${package_iapi}.__IAPI#queryLimit
 	 */
 	@Override
 	public List<T> queryLimit(PageParam page, T param) {
@@ -219,7 +219,7 @@ public abstract class __APIDefaultImpl<T> implements __IAPI<T> {
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.iamVip.HttpWebDB.logic.iapi.__IAPI#queryLimitEq
+	 * @see ${package_iapi}.__IAPI#queryLimitEq
 	 */
 	@Override
 	public List<T> queryLimitEq(PageParam page, T param) {
@@ -229,7 +229,7 @@ public abstract class __APIDefaultImpl<T> implements __IAPI<T> {
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.iamVip.HttpWebDB.logic.iapi.__IAPI#queryEq 
+	 * @see ${package_iapi}.__IAPI#queryEq 
 	 */
 	@Override
 	public T queryEq(String columns, T param) {
@@ -239,7 +239,7 @@ public abstract class __APIDefaultImpl<T> implements __IAPI<T> {
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.iamVip.HttpWebDB.logic.iapi.__IAPI#queryMulti 
+	 * @see ${package_iapi}.__IAPI#queryMulti 
 	 */
 	@Override
 	public List<T> queryMulti(String columns, T param) {
@@ -249,7 +249,7 @@ public abstract class __APIDefaultImpl<T> implements __IAPI<T> {
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.iamVip.HttpWebDB.logic.iapi.__IAPI#queryMultiEq 
+	 * @see ${package_iapi}.__IAPI#queryMultiEq 
 	 */
 	@Override
 	public List<T> queryMultiEq(String columns, T param) {
@@ -259,7 +259,7 @@ public abstract class __APIDefaultImpl<T> implements __IAPI<T> {
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.iamVip.HttpWebDB.logic.iapi.__IAPI#queryLimit
+	 * @see ${package_iapi}.__IAPI#queryLimit
 	 */
 	@Override
 	public List<T> queryLimit(String columns, PageParam page, T param) {
@@ -269,7 +269,7 @@ public abstract class __APIDefaultImpl<T> implements __IAPI<T> {
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.iamVip.HttpWebDB.logic.iapi.__IAPI#queryLimitEq
+	 * @see ${package_iapi}.__IAPI#queryLimitEq
 	 */
 	@Override
 	public List<T> queryLimitEq(String columns, PageParam page, T param) {

@@ -20,7 +20,7 @@ public class DTUtil {
 	public static final String FMT_FILE = "yyyy-MM-dd_HH-mm-ss";
 
 
-	private DTUtil() {
+	protected DTUtil() {
 	}
 
 	public static String nowDT() {

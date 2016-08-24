@@ -14,23 +14,25 @@ import java.util.Properties;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
-import org.cool.java.mysql.export.mybatis.TableDefine.ITableBeanName;
+import org.cool.java.mysql.export.PropertiesWithFolder;
+import org.cool.java.mysql.export.TableDefine;
+import org.cool.java.mysql.export.TableDefine.ITableBeanName;
 
 /**
  * @author Colin
  */
-public class PropertiesWithFolder {
+public class MyBatisPropertiesWithFolder extends PropertiesWithFolder {
 
 	private static final String BASE_PACKAGE_CHILD_FMT = "%s.%s";
 
 	/**
 	 * 
 	 */
-	public PropertiesWithFolder() {
+	public MyBatisPropertiesWithFolder() {
 	}
 
-	private String[] KEY_VELOCITY = { "package_c", "package_request_base", "package_model", "package_api", "package_database", "package_iapi", "package_ref", "package_adapter", "package_util" };
-	private String[] KEY_PROP = { "PATH_PACKAGE_C", "PATH_PACKAGE_REQUEST", "PATH_PACKAGE_MODEL", "PATH_PACKAGE_API", "PATH_PACKAGE_DATABASE", "PATH_PACKAGE_IAPI", "PATH_PACKAGE_REF", "PATH_PACKAGE_ADAPTER", "PATH_PACKAGE_UTIL" };
+	private String[] KEY_VELOCITY = { "package_c", "package_request_base", "package_model", "package_api", "package_database", "package_iapi", "package_ref", "package_adapter", "package_util", "package_mobile", "package_request" };
+	private String[] KEY_PROP = { "PATH_PACKAGE_C", "PATH_PACKAGE_REQUEST", "PATH_PACKAGE_MODEL", "PATH_PACKAGE_API", "PATH_PACKAGE_DATABASE", "PATH_PACKAGE_IAPI", "PATH_PACKAGE_REF", "PATH_PACKAGE_ADAPTER", "PATH_PACKAGE_UTIL", "PATH_PACKAGE_REQUEST_MOBILE", "PATH_PACKAGE_REQUEST" };
 	private String[] PKG_FOLDER = new String[KEY_PROP.length];
 	private String[] PKG_CLASS = new String[PKG_FOLDER.length];
 
@@ -45,7 +47,7 @@ public class PropertiesWithFolder {
 	private String XML_PREFIX;
 
 
-
+	@Override
 	public String get(String key) {
 		return prop.getProperty(key);
 	}
@@ -136,16 +138,17 @@ public class PropertiesWithFolder {
 		}
 
 
-		// final String PATH_PREFIX = "PATH_PACKAGE_";
-		//
-		// prop.keySet().forEach(okey -> {
-		// String key = okey.toString();
-		//
-		// if (key.startsWith(PATH_PREFIX)) {
-		// String val = prop.getProperty(key, "");
-		// validFolder(new File(PACKAGE_FOLDER, val.replace(".", File.separator)));
-		// }
-		// });
+		final String PATH_PREFIX = "PATH_PACKAGE_";
+
+		prop.keySet().forEach(okey -> {
+			String key = okey.toString();
+
+			if (key.startsWith(PATH_PREFIX)) {
+				String val = prop.getProperty(key, "");
+				String pk = String.format(BASE_PACKAGE_CHILD_FMT, BASE_PACKAGE, val);
+				validFolder(new File(PROJ_ROOT + File.separator + pk.replace(".", File.separator)));
+			}
+		});
 
 
 
@@ -202,6 +205,10 @@ public class PropertiesWithFolder {
 	}
 
 	public void cpTemplate() throws Exception {
+		this.cpTemplate("mybatis");
+	}
+
+	public void cpTemplate(String folder) throws Exception {
 
 		VelocityContext context = new VelocityContext();
 
@@ -228,6 +235,10 @@ public class PropertiesWithFolder {
 				// String templatePath = resource2temp(pkg.replace(".", "/") + "/" + toName + ".bin");
 				String templatePath = "template/" + toName + ".vm"; // resource2temp("template/" + toName.replace("_", "") + ".vm"); // resource2temp("template/" + toName + ".bin");
 
+				if (!Velocity.resourceExists(templatePath)) {
+					templatePath = "template/" + folder + toName + ".vm";
+				}
+
 				if (Velocity.resourceExists(templatePath)) {
 
 					Template template = Velocity.getTemplate(templatePath, "UTF-8");
@@ -242,6 +253,8 @@ public class PropertiesWithFolder {
 				else {
 					System.err.format("Can't find resource '%s'. \r\n", templatePath);
 				}
+
+
 
 			}
 		}
@@ -489,6 +502,70 @@ public class PropertiesWithFolder {
 				context.put("hasPrimaryKey", (td.primaryKey != null));
 				context.put("primaryKey", td.primaryKey);
 				context.put("bean", bean);
+
+				FileWriter writer = new FileWriter(toFile);
+
+				template.merge(context, writer);
+
+				writer.close();
+
+			}
+
+		}
+		else {
+			System.err.format("Can't find resource '%s'. \r\n", templatePath);
+		}
+
+	}
+
+	/**
+	 * @param list
+	 * @param rule
+	 * @throws IOException
+	 */
+	public void toPhoneRequest(List<TableDefine> list, ITableBeanName rule) throws IOException {
+
+		String templatePath = "template/" + "PhoneRequest.java.vm";
+
+		if (Velocity.resourceExists(templatePath)) {
+
+			int index = findIt(KEY_PROP, "PATH_PACKAGE_REQUEST_MOBILE");
+			String toFolder = PKG_FOLDER[index];
+			String package_mobile = PKG_CLASS[index];
+
+			index = findIt(KEY_PROP, "PATH_PACKAGE_REQUEST");
+			String package_request = PKG_CLASS[index];
+
+			index = findIt(KEY_PROP, "PATH_PACKAGE_MODEL");
+			String package_model = PKG_CLASS[index];
+
+			index = findIt(KEY_PROP, "PATH_PACKAGE_DATABASE");
+			String package_database = PKG_CLASS[index];
+
+			index = findIt(KEY_PROP, "PATH_PACKAGE_C");
+			String package_c = PKG_CLASS[index];
+
+			Template template = Velocity.getTemplate(templatePath, "UTF-8");
+
+			VelocityContext context = new VelocityContext();
+			context.put("package_mobile", package_mobile);
+			context.put("package_request", package_request);
+			context.put("package_c", package_c);
+			context.put("package_model", package_model);
+			context.put("package_database", package_database);
+
+			for (TableDefine td : list) {
+
+				String bean = rule != null ? rule.translateIt(td.name) : td.name;
+				File toFile = new File(toFolder, bean + "PhoneRequest.java");
+
+				String url = td.name.replace("_", "/");
+
+				context.put("table", td);
+				context.put("hasPrimaryKey", (td.primaryKey != null));
+				context.put("primaryKey", td.primaryKey);
+				context.put("bean", bean);
+				context.put("url", url);
 
 				FileWriter writer = new FileWriter(toFile);
 

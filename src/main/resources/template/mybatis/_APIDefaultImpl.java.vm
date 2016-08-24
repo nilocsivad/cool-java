@@ -30,7 +30,7 @@ public class ${bean}ApiImpl extends __APIDefaultImpl<${bean}Model> implements I$
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.iamVip.HttpWebDB.logic.api.impl.__APIDefaultImpl#getDBApi()
+	 * @see ${package_api}.__APIDefaultImpl#getDBApi()
 	 */
 	@Override
 	protected __IDBAPI<${bean}Model> getDBApi() {
