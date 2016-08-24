@@ -4,6 +4,7 @@
 package ${package_adapter};
 
 import java.io.IOException;
+import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import ${package_c}.IAPP;
+import ${package_util}.DTUtil;
 import ${package_util}.MethodUtil;
 
 /**
@@ -46,7 +48,19 @@ public class PrivilegeHandlerInterceptorAdapter extends HandlerInterceptorAdapte
 			StringBuffer buf = new StringBuffer();
 			//buf.append("RequestURI " + request.getRequestURI() + LINE);
 			buf.append("RequestURL " + request.getRequestURL() + LINE);
-			buf.append("Execute " + className + "." + methodName);
+			buf.append("Execute " + className + "." + methodName + LINE);
+
+			Enumeration<String> names = request.getParameterNames();
+			int c = 0;
+			while (names.hasMoreElements()) {
+				c++;
+				String key = names.nextElement();
+				String value = request.getParameter(key);
+				buf.append(String.format("%s --> %s \r\n", key, value));
+			}
+			buf.append("Parameter Length " + c + "\r\n");
+			String userAgent = request.getHeader("User-Agent");
+			buf.append("is from phone ? " + (userAgent != null && userAgent.contains("Android") ? "Android" : "") + (userAgent != null && userAgent.contains("iPhone") ? "iOS" : "") + " \t\t Request at: " + DTUtil.nowDT());
 			System.out.println(buf);
 
 			{ // ** 过滤掉配置忽略的请求
