@@ -1,0 +1,93 @@
+/**
+ * 
+ */
+package ${package_api};
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import ${package_database}.IDAO;
+import ${package_iapi}.I${bean}Service;
+import ${package_model}.${bean}Model;
+import ${package_ref}.DataGridModel;
+
+/**
+ * ${comment} <br />
+ * Database table: ${table} <br />
+ * @author Colin
+ */
+@Service
+public class ${bean}ServiceImplement extends __APIDefaultImpl<${bean}Model> implements I${bean}Service {
+
+	@Autowired
+	private IDAO<${bean}Model> __${bean}DAO;
+
+	/**
+	 * 
+	 */
+	public ${bean}ServiceImplement() {
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.defence.band.v2.logic.api.impl.__APIDefaultImpl
+	 */
+	@Override
+	protected IDAO<${bean}Model> getDAO() {
+		return __${bean}DAO;
+	}
+
+	@Override
+	public Object save(${bean}Model model) {
+		return this.getDAO().save("${bean}Model.save", model);
+	}
+
+	@Override
+	public Integer saveReturnInt(${bean}Model model) {
+		return this.getDAO().saveReturnInt("${bean}Model.saveReturnInt", model);
+	}
+
+	@Override
+	public Long saveReturnLong(${bean}Model model) {
+		return this.getDAO().saveReturnLong("${bean}Model.saveReturnLong", model);
+	}
+
+	@Override
+	public ${bean}Model getOne(Object obj) {
+		return this.getDAO().getOne("${bean}Model.getOne", obj);
+	}
+
+	@Override
+	public List<${bean}Model> getList(Object obj) {
+		return this.getDAO().getList("${bean}Model.getList", obj);
+	}
+
+	@Override
+	public int update(Object obj) {
+		return this.getDAO().update("${bean}Model.update", obj);
+	}
+
+	@Override
+	public int delete(Object obj) {
+		return this.getDAO().delete("${bean}Model.delete", obj);
+	}
+
+	@Override
+	public Integer getCountInt(Object param) {
+		return this.getDAO().getCountInt("${bean}Model.getCountInt", param);
+	}
+
+	@Override
+	public Long getCountLong(Object param) {
+		return this.getDAO().getCountLong("${bean}Model.getCountLong", param);
+	}
+
+	@Override
+	public Map<String, Object> getPageListForUI(DataGridModel dgm, ${bean}Model model) {
+		return this.getDAO().getPageListForUI("${bean}Model.getPageListForUI", "${bean}Model.getCountLong", dgm, model);
+	}
+
+}
