@@ -12,6 +12,10 @@ import java.lang.reflect.Field;
  */
 public class ${bean}Model extends __Model {
 
+#foreach( $itm in $cols )
+	/// $itm.javaType $itm.name; 		// $itm.comment $itm.type ($itm.len) nullable: $itm.canBeNull
+#end
+
 	/**
 	 * 
 	 */
@@ -41,7 +45,6 @@ public class ${bean}Model extends __Model {
 	 */
 	public ${bean}Model() {
 	}
-
 
 #foreach( $itm in $cols )
 	/**

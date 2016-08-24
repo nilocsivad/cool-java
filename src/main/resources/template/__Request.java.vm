@@ -78,16 +78,16 @@ public class __Request implements IAPP {
 						if (val == null) {
 							map.put(key, (from == 9 ? "nil" : null));
 						}
-						else {
-							if (val instanceof Integer && from == 9) {
-								Integer ival = (Integer) val;
-								ival = ival == 0 ? -ival : ival;
-								map.put(key, ival);
-							}
-							else {
-								map.put(key, val);
-							}
-						}
+						// else {
+						// if (val instanceof Integer && from == 9) {
+						// Integer ival = (Integer) val;
+						// ival = ival == 0 ? -ival : ival;
+						// map.put(key, ival);
+						// }
+						// else {
+						// map.put(key, val);
+						// }
+						// }
 						fd.setAccessible(false);
 					}
 				} catch (NoSuchFieldException e) {
@@ -120,6 +120,30 @@ public class __Request implements IAPP {
 			list.add(this.toMap2(from, t, fields));
 		}
 		return list;
+	}
+
+	/**
+	 * iOS null->nil 0->-0
+	 * @param from 0:Android 9:iOS
+	 * @param map
+	 * @return
+	 */
+	public Map<String, Object> mapData(int from, Map<String, Object> map) {
+		if (from == 9) {
+			for (Map.Entry<String, Object> itm : map.entrySet()) {
+				if (itm.getValue() == null) {
+					itm.setValue("nil");
+				}
+				// else {
+				// if (itm.getValue() instanceof Integer) {
+				// int v = (int) itm.getValue();
+				// if (v == 0)
+				// map.put(itm.getKey(), -v);
+				// }
+				// }
+			}
+		}
+		return map;
 	}
 
 	/**

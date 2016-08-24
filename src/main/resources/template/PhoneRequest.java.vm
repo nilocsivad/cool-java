@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import ${package_request}.__Request;
 import ${package_c}.IAPP;
 
 /**
@@ -23,7 +22,7 @@ import ${package_c}.IAPP;
  */
 @Controller
 @RequestMapping(value = { "l2/phone/${url}" })
-public class ${bean}PhoneRequest extends __Request implements IAPP {
+public class ${bean}PhoneRequest extends __PhoneRequest implements IAPP {
 
 	/**
 	 * 
