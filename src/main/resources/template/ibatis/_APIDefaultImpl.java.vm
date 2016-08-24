@@ -42,52 +42,52 @@ public class ${bean}ServiceImplement extends __APIDefaultImpl<${bean}Model> impl
 
 	@Override
 	public Object save(${bean}Model model) {
-		return this.getDAO().save("${bean}Model.save", model);
+		return this.save("${bean}Model.save", model);
 	}
 
 	@Override
 	public Integer saveReturnInt(${bean}Model model) {
-		return this.getDAO().saveReturnInt("${bean}Model.saveReturnInt", model);
+		return this.saveReturnInt("${bean}Model.saveReturnInt", model);
 	}
 
 	@Override
 	public Long saveReturnLong(${bean}Model model) {
-		return this.getDAO().saveReturnLong("${bean}Model.saveReturnLong", model);
+		return this.saveReturnLong("${bean}Model.saveReturnLong", model);
 	}
 
 	@Override
 	public ${bean}Model getOne(Object obj) {
-		return this.getDAO().getOne("${bean}Model.getOne", obj);
+		return this.getOne("${bean}Model.getOne", obj);
 	}
 
 	@Override
 	public List<${bean}Model> getList(Object obj) {
-		return this.getDAO().getList("${bean}Model.getList", obj);
+		return this.getList("${bean}Model.getList", obj);
 	}
 
 	@Override
 	public int update(Object obj) {
-		return this.getDAO().update("${bean}Model.update", obj);
+		return this.update("${bean}Model.update", obj);
 	}
 
 	@Override
 	public int delete(Object obj) {
-		return this.getDAO().delete("${bean}Model.delete", obj);
+		return this.delete("${bean}Model.delete", obj);
 	}
 
 	@Override
 	public Integer getCountInt(Object param) {
-		return this.getDAO().getCountInt("${bean}Model.getCountInt", param);
+		return this.getCountInt("${bean}Model.getCountInt", param);
 	}
 
 	@Override
 	public Long getCountLong(Object param) {
-		return this.getDAO().getCountLong("${bean}Model.getCountLong", param);
+		return this.getCountLong("${bean}Model.getCountLong", param);
 	}
 
 	@Override
 	public Map<String, Object> getPageListForUI(DataGridModel dgm, ${bean}Model model) {
-		return this.getDAO().getPageListForUI("${bean}Model.getPageListForUI", "${bean}Model.getCountLong", dgm, model);
+		return this.getPageListForUI("${bean}Model.getPageListForUI", "${bean}Model.getCountLong", dgm, model);
 	}
 
 }

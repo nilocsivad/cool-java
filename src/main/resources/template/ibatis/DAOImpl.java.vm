@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import ${package_ref}.DataGridModel;
 
-@Repository()
+@Repository
 public class DAOImpl<T> extends SqlMapClientTemplate implements IDAO<T> {
 
 	/*
