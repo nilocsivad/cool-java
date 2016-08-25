@@ -129,7 +129,7 @@
 
 	
 	<select id="${bean}Model.getOne" resultClass="${bean}Model">
-		SELECT * FROM
+		SELECT ${table.columnString} FROM
 		<include refid="TABLE_${beanUpper}" />
 		<dynamic prepend="WHERE">
 #foreach( $itm in $table.columns )
@@ -140,7 +140,7 @@
 	</select>
 	
 	<select id="${bean}Model.getList" resultClass="${bean}Model">
-		SELECT * FROM
+		SELECT ${table.columnString} FROM
 		<include refid="TABLE_${beanUpper}" />
 		<dynamic prepend="WHERE">
 #foreach( $itm in $table.columns )
@@ -176,7 +176,7 @@
 	</select>
 	
 	<select id="${bean}Model.getPageListForUI" resultClass="${bean}Model" parameterClass="java.util.Map">
-		SELECT * FROM
+		SELECT ${table.columnString} FROM
 		<include refid="TABLE_${beanUpper}" />
 		<dynamic prepend="WHERE">
 #foreach( $itm in $table.columns )
