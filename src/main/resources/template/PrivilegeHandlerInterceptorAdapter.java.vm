@@ -78,14 +78,14 @@ public class PrivilegeHandlerInterceptorAdapter extends HandlerInterceptorAdapte
 				}
 			}
 
-			if (className.startsWith(BACKEND)) {
+			if (className.startsWith(REQ)) {
 				// <backend-control-area>
-				return this.controlURL(request, response, ONLINE_MANAGER);
+				return this.controlURL(request, response, ONLINE_REQ);
 				// </backend-control-area>
 			}
-			else if (className.startsWith(FRONTEND)) {
+			else if (className.startsWith(WEB)) {
 				// <facade-control-area>
-				return this.controlURL(request, response, ONLINE_CLIENTELE);
+				return this.controlURL(request, response, ONLINE_WEB);
 				// </facade-control-area>
 			}
 

@@ -13,10 +13,6 @@ import ${package_ref}.DataGridModel;
 @Repository
 public class DAOImpl<T> extends SqlMapClientTemplate implements IDAO<T> {
 
-	/*
-	 * (non-Javadoc)
-	 * @see ${package_database}.IDAO##save(java.lang.String, java.lang.Object)
-	 */
 	@Override
 	public Object save(String sqlMapID, T model) {
 		return insert(sqlMapID, model);
@@ -27,10 +23,6 @@ public class DAOImpl<T> extends SqlMapClientTemplate implements IDAO<T> {
 		return insert(sqlMapID, obj);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see ${package_database}.IDAO##saveReturnInt(java.lang.String, java.lang.Object)
-	 */
 	@Override
 	public Integer saveReturnInt(String sqlMapID, T model) {
 		Object obj = this.save(sqlMapID, model);
@@ -39,10 +31,6 @@ public class DAOImpl<T> extends SqlMapClientTemplate implements IDAO<T> {
 		return 0;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see ${package_database}.IDAO##saveReturnLong(java.lang.String, java.lang.Object)
-	 */
 	@Override
 	public Long saveReturnLong(String sqlMapID, T model) {
 		Object obj = this.save(sqlMapID, model);
@@ -51,64 +39,36 @@ public class DAOImpl<T> extends SqlMapClientTemplate implements IDAO<T> {
 		return 0L;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see ${package_database}.IDAO##getOne(java.lang.String)
-	 */
-	@Override
-	public T getOne(String sqlMapID) {
-		return (T) queryForObject(sqlMapID);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see ${package_database}.IDAO##getOne(java.lang.String, java.lang.Object)
-	 */
-	@Override
-	public T getOne(String sqlMapID, Object obj) {
-		return (T) queryForObject(sqlMapID, obj);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see ${package_database}.IDAO##getList(java.lang.String)
-	 */
-	@Override
-	public List<T> getList(String sqlMapID) {
-		return queryForList(sqlMapID);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see ${package_database}.IDAO##getList(java.lang.String, java.lang.Object)
-	 */
-	@Override
-	public List<T> getList(String sqlMapID, Object obj) {
-		return queryForList(sqlMapID, obj);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see ${package_database}.IDAO##update(java.lang.String, java.lang.Object)
-	 */
 	@Override
 	public int update(String sqlMapID, Object obj) {
 		return update(sqlMapID, obj);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see ${package_database}.IDAO##delete(java.lang.String, java.lang.Object)
-	 */
 	@Override
 	public int delete(String sqlMapID, Object obj) {
 		return delete(sqlMapID, obj);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see ${package_database}.IDAO##getCountInt(java.lang.String, java.lang.Object)
-	 */
+	@Override
+	public T getOne(String sqlMapID) {
+		return (T) queryForObject(sqlMapID);
+	}
+
+	@Override
+	public T getOne(String sqlMapID, Object obj) {
+		return (T) queryForObject(sqlMapID, obj);
+	}
+
+	@Override
+	public List<T> getList(String sqlMapID) {
+		return queryForList(sqlMapID);
+	}
+
+	@Override
+	public List<T> getList(String sqlMapID, Object obj) {
+		return queryForList(sqlMapID, obj);
+	}
+
 	@Override
 	public Integer getCountInt(String sqlMapID, Object param) {
 		Object obj = queryForObject(sqlMapID, param);
@@ -117,10 +77,6 @@ public class DAOImpl<T> extends SqlMapClientTemplate implements IDAO<T> {
 		return 0;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see ${package_database}.IDAO##getCountLong(java.lang.String, java.lang.Object)
-	 */
 	@Override
 	public Long getCountLong(String sqlMapID, Object param) {
 		Object obj = queryForObject(sqlMapID, param);
@@ -129,15 +85,12 @@ public class DAOImpl<T> extends SqlMapClientTemplate implements IDAO<T> {
 		return 0L;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see ${package_database}.IDAO##getPageListForUI(java.lang.String, java.lang.String, org.cool.java.mysql.export.ibatis.DataGridModel, java.lang.Object)
-	 */
 	@Override
-	public Map<String, Object> getPageListForUI(String sqlMapSelectID, String sqlMapCountID, DataGridModel dgm, T model) {
+	public Map<String, Object> getPageListForUI(String columns, String sqlMapSelectID, String sqlMapCountID, DataGridModel dgm, T model) {
 		Map<String, Object> result = new HashMap<String, Object>(2);
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("model", model);
+		map.put("columns", columns);
+		map.put("param", model);
 		map.put("begin", (dgm.getPage() - 1) * dgm.getRows());
 		map.put("end", dgm.getRows());
 		map.put("sort", dgm.getSort());

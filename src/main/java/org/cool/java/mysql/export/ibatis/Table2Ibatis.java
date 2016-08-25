@@ -81,8 +81,8 @@ public class Table2Ibatis {
 		// first.printProperties();
 		/// 创建文件夹 ///
 		first.initFolders();
-		/// 复制模版文件 ///
-		first.cpTemplate();
+//		/// 复制模版文件 ///
+//		first.cpTemplate();
 
 
 
@@ -109,8 +109,8 @@ public class Table2Ibatis {
 		first.toImplement(list, rule);
 		/// 生成 XML 文件 ///
 		first.toXML(list, rule);
-		///
-		first.toPhoneRequest(list, rule);
+		// ///
+		// first.toPhoneRequest(list, rule);
 
 
 

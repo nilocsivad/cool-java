@@ -15,6 +15,10 @@ public interface IDAO<T> {
 
 	public Long saveReturnLong(String sqlMapID, T model);
 
+	public int update(String sqlMapID, Object obj);
+
+	public int delete(String sqlMapID, Object obj);
+
 	public T getOne(String sqlMapID);
 
 	public T getOne(String sqlMapID, Object obj);
@@ -23,14 +27,10 @@ public interface IDAO<T> {
 
 	public List<T> getList(String sqlMapID, Object obj);
 
-	public int update(String sqlMapID, Object obj);
-
-	public int delete(String sqlMapID, Object obj);
-
 	public Integer getCountInt(String sqlMapID, Object param);
 
 	public Long getCountLong(String sqlMapID, Object param);
 
-	public Map<String, Object> getPageListForUI(String sqlMapSelectID, String sqlMapCountID, DataGridModel dgm, T model);
+	public Map<String, Object> getPageListForUI(String columns, String sqlMapSelectID, String sqlMapCountID, DataGridModel dgm, T model);
 
 }

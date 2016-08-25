@@ -20,6 +20,16 @@ public class ${bean}Model extends __Model {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	/**
+	 * All fields, like colPK,colA,colB,colC...
+	 */
+	public static final String ALL = "${all}";
+	
+	/**
+	 * Fields without PK, like colA,colB,colC...
+	 */
+	public static final String NOPK = "${noPK}";
 
 
 #foreach( $itm in $cols )

@@ -9,6 +9,7 @@ import java.util.Map;
 import ${package_database}.IDAO;
 import ${package_iapi}.__IAPI;
 import ${package_ref}.DataGridModel;
+import ${package_util}.MapUtil;
 
 /**
  * @author Colin
@@ -41,67 +42,41 @@ public abstract class __APIDefaultImpl<T> implements __IAPI<T> {
 		return this.getDAO().saveReturnLong(sqlMapID, model);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see ${package_iapi}.__IAPI##getOne(java.lang.String, java.lang.Object)
-	 */
-	@Override
-	public T getOne(String sqlMapID, Object obj) {
-		return this.getDAO().getOne(sqlMapID, obj);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see ${package_iapi}.__IAPI##getList(java.lang.String, java.lang.Object)
-	 */
-	@Override
-	public List<T> getList(String sqlMapID, Object obj) {
-		return this.getDAO().getList(sqlMapID, obj);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see ${package_iapi}.__IAPI##update(java.lang.String, java.lang.Object)
-	 */
 	@Override
 	public int update(String sqlMapID, Object obj) {
 		return this.getDAO().update(sqlMapID, obj);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see ${package_iapi}.__IAPI##delete(java.lang.String, java.lang.Object)
-	 */
 	@Override
 	public int delete(String sqlMapID, Object obj) {
 		return this.getDAO().delete(sqlMapID, obj);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see ${package_iapi}.__IAPI##getCountInt(java.lang.String, java.lang.Object)
-	 */
+	@Override
+	public T getOne(String columns, String sqlMapID, Object obj) {
+		Map<String, Object> map = MapUtil.mapThem(new String[] { "columns", "param" }, columns, obj);
+		return this.getDAO().getOne(sqlMapID, map);
+	}
+
+	@Override
+	public List<T> getList(String columns, String sqlMapID, Object obj) {
+		Map<String, Object> map = MapUtil.mapThem(new String[] { "columns", "param" }, columns, obj);
+		return this.getDAO().getList(sqlMapID, map);
+	}
+
 	@Override
 	public Integer getCountInt(String sqlMapID, Object param) {
 		return this.getDAO().getCountInt(sqlMapID, param);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see ${package_iapi}.__IAPI##getCountLong(java.lang.String, java.lang.Object)
-	 */
 	@Override
 	public Long getCountLong(String sqlMapID, Object param) {
 		return this.getDAO().getCountLong(sqlMapID, param);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see ${package_iapi}.__IAPI##getPageListForUI(java.lang.String, java.lang.String, com.defence.band.v2.rs.ref.DataGridModel, java.lang.Object)
-	 */
 	@Override
-	public Map<String, Object> getPageListForUI(String sqlMapSelectID, String sqlMapCountID, DataGridModel dgm, T model) {
-		return this.getDAO().getPageListForUI(sqlMapSelectID, sqlMapCountID, dgm, model);
+	public Map<String, Object> getPageListForUI(String columns, String sqlMapSelectID, String sqlMapCountID, DataGridModel dgm, T model) {
+		return this.getDAO().getPageListForUI(columns, sqlMapSelectID, sqlMapCountID, dgm, model);
 	}
 
 

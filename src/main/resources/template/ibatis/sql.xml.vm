@@ -128,24 +128,32 @@
 
 
 	
+#if( ${hasPrimaryKey} == true )
+	<select id="${bean}Model.getOneByPK" resultClass="${bean}Model">
+		SELECT ${__4}columns${__4} FROM
+		<include refid="TABLE_${beanUpper}" />
+		WHERE ${primaryKey} = #param#
+	</select>
+#end
+	
 	<select id="${bean}Model.getOne" resultClass="${bean}Model">
-		SELECT ${table.columnString} FROM
+		SELECT ${__4}columns${__4} FROM
 		<include refid="TABLE_${beanUpper}" />
 		<dynamic prepend="WHERE">
 #foreach( $itm in $table.columns )
-			<isNotEmpty property="${itm.name}" prepend="AND"> ${itm.name} = #${itm.name}# </isNotEmpty>
+			<isNotEmpty property="param.${itm.name}" prepend="AND"> ${itm.name} = #param.${itm.name}# </isNotEmpty>
 #end
 		</dynamic>
 		LIMIT 1
 	</select>
 	
 	<select id="${bean}Model.getList" resultClass="${bean}Model">
-		SELECT ${table.columnString} FROM
+		SELECT ${__4}columns${__4} FROM
 		<include refid="TABLE_${beanUpper}" />
 		<dynamic prepend="WHERE">
 #foreach( $itm in $table.columns )
 #if( ${itm.primayKey} == false ) 
-			<isNotEmpty property="${itm.name}" prepend="AND"> ${itm.name} = #${itm.name}# </isNotEmpty>
+			<isNotEmpty property="param.${itm.name}" prepend="AND"> ${itm.name} = #param.${itm.name}# </isNotEmpty>
 #end
 #end
 		</dynamic>
@@ -175,13 +183,25 @@
 		</dynamic>
 	</select>
 	
-	<select id="${bean}Model.getPageListForUI" resultClass="${bean}Model" parameterClass="java.util.Map">
-		SELECT ${table.columnString} FROM
+	<select id="${bean}Model.getCountLongMap" resultClass="long">
+		SELECT COUNT(*) FROM
 		<include refid="TABLE_${beanUpper}" />
 		<dynamic prepend="WHERE">
 #foreach( $itm in $table.columns )
 #if( ${itm.primayKey} == false ) 
-			<isNotEmpty property="model.${itm.name}" prepend="AND"> ${itm.name} = #model.${itm.name}# </isNotEmpty>
+			<isNotEmpty property="param.${itm.name}" prepend="AND"> ${itm.name} = #param.${itm.name}# </isNotEmpty>
+#end
+#end
+		</dynamic>
+	</select>
+	
+	<select id="${bean}Model.getPageListForUI" resultClass="${bean}Model" parameterClass="java.util.Map">
+		SELECT ${__4}columns${__4} FROM
+		<include refid="TABLE_${beanUpper}" />
+		<dynamic prepend="WHERE">
+#foreach( $itm in $table.columns )
+#if( ${itm.primayKey} == false ) 
+			<isNotEmpty property="param.${itm.name}" prepend="AND"> ${itm.name} = #param.${itm.name}# </isNotEmpty>
 #end
 #end
 		</dynamic>

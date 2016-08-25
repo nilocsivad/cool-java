@@ -3,8 +3,6 @@
  */
 package ${package_c};
 
-import com.google.gson.Gson;
-
 /**
  * @author Colin
  * 
@@ -13,18 +11,16 @@ public interface IAPP {
 
 	String LINE = "\r\n";
 
-	String JSON_KEY = "key";
-	String JSON_RESULT_KEY = "result";
-	String JSON_EXTRA_KEY = "extra";
+	String JSON_KEY = "sign";
+	String JSON_RESULT = "result";
+	String JSON_MSG = "message";
 
 	String DEFAULT_IMAGE_SUFFIX = "jpg";
 
-	String BACKEND = "com.iam_vip.generate_json.act.backend";
-	String FRONTEND = "com.iam_vip.generate_json.act.facade";
+	String REQ = "${package_req}";
+	String WEB = "${package_web}";
 
-	String ONLINE_MANAGER = "manager";
-	String ONLINE_CLIENTELE = "clientele";
-
-	Gson gson = new Gson();
+	String ONLINE_REQ = "req";
+	String ONLINE_WEB = "web";
 
 }

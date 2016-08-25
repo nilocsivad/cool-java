@@ -12,44 +12,48 @@ import ${package_ref}.DataGridModel;
  * @author Colin
  */
 public interface __IAPI<T> {
-	
+
 	public Object saveMulti(String sqlMapID, Object obj);
-
-	public T getOne(String sqlMapID, Object obj);
-
-	public List<T> getList(String sqlMapID, Object obj);
 
 	public int update(String sqlMapID, Object obj);
 
 	public int delete(String sqlMapID, Object obj);
+
+	public T getOne(String columns, String sqlMapID, Object obj);
+
+	public T getOneByPK(String columns, Object obj);
+
+	public List<T> getList(String columns, String sqlMapID, Object obj);
+	
+	public List<T> getList(String columns, Object obj);
 
 	public Integer getCountInt(String sqlMapID, Object param);
 
 	public Long getCountLong(String sqlMapID, Object param);
 
 	public Map<String, Object> getPageListForUI(String sqlMapSelectID, String sqlMapCountID, DataGridModel dgm, T model);
-	
-	
-	
-	
+
+	public Map<String, Object> getPageListForUI(String columns, String sqlMapSelectID, String sqlMapCountID, DataGridModel dgm, T model);
+
+
+
+
 	public Object save(T model);
-	
+
 	public Integer saveReturnInt(T model);
-	
+
 	public Long saveReturnLong(T model);
-	
-	public T getOne(Object obj);
-	
-	public List<T> getList(Object obj);
-	
+
 	public int update(Object obj);
-	
+
 	public int delete(Object obj);
-	
+
+	public List<T> getList(Object obj);
+
 	public Integer getCountInt(Object param);
-	
+
 	public Long getCountLong(Object param);
-	
+
 	public Map<String, Object> getPageListForUI(DataGridModel dgm, T model);
 
 }

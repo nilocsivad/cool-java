@@ -44,7 +44,7 @@ public class __Request implements IAPP {
 			// extra.put(key.toString(), value);
 			// });
 			// }
-			map.put(JSON_EXTRA_KEY, extra);
+			map.put(JSON_RESULT, extra);
 		}
 		return map;
 	}

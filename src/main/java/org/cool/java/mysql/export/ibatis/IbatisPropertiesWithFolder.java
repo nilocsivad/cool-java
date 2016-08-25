@@ -31,8 +31,8 @@ public class IbatisPropertiesWithFolder extends PropertiesWithFolder {
 	public IbatisPropertiesWithFolder() {
 	}
 
-	private String[] KEY_VELOCITY = { "package_c", "package_request_base", "package_model", "package_api", "package_database", "package_iapi", "package_ref", "package_adapter", "package_util", "package_mobile", "package_request" };
-	private String[] KEY_PROP = { "PATH_PACKAGE_C", "PATH_PACKAGE_REQUEST", "PATH_PACKAGE_MODEL", "PATH_PACKAGE_API", "PATH_PACKAGE_DATABASE", "PATH_PACKAGE_IAPI", "PATH_PACKAGE_REF", "PATH_PACKAGE_ADAPTER", "PATH_PACKAGE_UTIL", "PATH_PACKAGE_REQUEST_MOBILE", "PATH_PACKAGE_REQUEST" };
+	private String[] KEY_VELOCITY = { "package_c", "package_request_base", "package_model", "package_api", "package_database", "package_iapi", "package_ref", "package_adapter", "package_util", "package_mobile", "package_request", "package_web", "package_req" };
+	private String[] KEY_PROP = { "PATH_PACKAGE_C", "PATH_PACKAGE_REQUEST", "PATH_PACKAGE_MODEL", "PATH_PACKAGE_API", "PATH_PACKAGE_DATABASE", "PATH_PACKAGE_IAPI", "PATH_PACKAGE_REF", "PATH_PACKAGE_ADAPTER", "PATH_PACKAGE_UTIL", "PATH_PACKAGE_REQUEST_MOBILE", "PATH_PACKAGE_REQUEST", "PATH_PACKAGE_REQUEST_WEB", "PATH_PACKAGE_REQUEST_BACKEND" };
 	private String[] PKG_FOLDER = new String[KEY_PROP.length];
 	private String[] PKG_CLASS = new String[PKG_FOLDER.length];
 
@@ -295,6 +295,8 @@ public class IbatisPropertiesWithFolder extends PropertiesWithFolder {
 				context.put("table", td.name);
 				context.put("bean", bean);
 				context.put("cols", td.columns);
+				context.put("all", td.getColumnString(true));
+				context.put("noPK", td.getColumnString());
 
 				FileWriter writer = new FileWriter(toFile);
 
@@ -423,6 +425,7 @@ public class IbatisPropertiesWithFolder extends PropertiesWithFolder {
 				context.put("comment", td.comment == null ? "" : td.comment);
 				context.put("table", td.name);
 				context.put("bean", bean);
+				context.put("columns", td.getColumnItemValueString(true));
 
 				FileWriter writer = new FileWriter(toFile);
 
