@@ -114,8 +114,8 @@
 #end
 #end			
 		</dynamic>
-		WHERE
-		<dynamic>
+		<isNull property="param"> error here </isNull>
+		<dynamic prepend="WHERE">
 #foreach( $itm in $table.columns )
 #if( ${itm.primayKey} == false ) 
 			<isNotEmpty property="param.${itm.name}" prepend="AND"> ${itm.name} = #param.${itm.name}# </isNotEmpty>
@@ -129,14 +129,14 @@
 
 	
 #if( ${hasPrimaryKey} == true )
-	<select id="${bean}Model.getOneByPK" resultClass="${bean}Model">
+	<select id="${bean}Model.getOneByPK" remapResults="true" resultClass="${bean}Model">
 		SELECT ${__4}columns${__4} FROM
 		<include refid="TABLE_${beanUpper}" />
 		WHERE ${primaryKey} = #param#
 	</select>
 #end
 	
-	<select id="${bean}Model.getOne" resultClass="${bean}Model">
+	<select id="${bean}Model.getOne" remapResults="true" resultClass="${bean}Model">
 		SELECT ${__4}columns${__4} FROM
 		<include refid="TABLE_${beanUpper}" />
 		<dynamic prepend="WHERE">
@@ -147,7 +147,7 @@
 		LIMIT 1
 	</select>
 	
-	<select id="${bean}Model.getList" resultClass="${bean}Model">
+	<select id="${bean}Model.getList" remapResults="true" resultClass="${bean}Model">
 		SELECT ${__4}columns${__4} FROM
 		<include refid="TABLE_${beanUpper}" />
 		<dynamic prepend="WHERE">
@@ -157,6 +157,16 @@
 #end
 #end
 		</dynamic>
+		<isNotNull property="sort">
+		<isNotEmpty property="sort"> 
+			ORDER BY $sort$ $order$
+		</isNotEmpty>
+		</isNotNull>
+		<isNotNull property="length">
+		<isNotEmpty property="length"> 
+			LIMIT $length$
+		</isNotEmpty>
+		</isNotNull>
 	</select>
 	
 	<select id="${bean}Model.getCountInt" resultClass="int">
@@ -195,7 +205,7 @@
 		</dynamic>
 	</select>
 	
-	<select id="${bean}Model.getPageListForUI" resultClass="${bean}Model" parameterClass="java.util.Map">
+	<select id="${bean}Model.getPageListForUI" remapResults="true" resultClass="${bean}Model" parameterClass="java.util.Map">
 		SELECT ${__4}columns${__4} FROM
 		<include refid="TABLE_${beanUpper}" />
 		<dynamic prepend="WHERE">

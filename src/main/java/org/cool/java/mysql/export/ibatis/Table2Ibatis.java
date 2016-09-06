@@ -81,8 +81,8 @@ public class Table2Ibatis {
 		// first.printProperties();
 		/// 创建文件夹 ///
 		first.initFolders();
-//		/// 复制模版文件 ///
-//		first.cpTemplate();
+		// /// 复制模版文件 ///
+		// first.cpTemplate();
 
 
 
@@ -95,7 +95,7 @@ public class Table2Ibatis {
 
 
 		ITableBeanName rule = run.new NameRuleNoUnderline();
-		List<TableDefine> list = dbt.getTables("manager", "manager_code");
+		List<TableDefine> list = dbt.getTables("news", "manager", "manager_code", "contacts", "remote_care", "target", "versions", "feedback", "manager_heartrate", "manager_sleep", "manager_motion", "manager_position");
 		// ITableBeanName rule = run.new NameRuleHTUnderline();
 		// List<TableDefine> list = dbt.getTables("ht_sale_number");
 
@@ -110,7 +110,7 @@ public class Table2Ibatis {
 		/// 生成 XML 文件 ///
 		first.toXML(list, rule);
 		// ///
-		// first.toPhoneRequest(list, rule);
+		first.toPhoneRequest(list, rule);
 
 
 

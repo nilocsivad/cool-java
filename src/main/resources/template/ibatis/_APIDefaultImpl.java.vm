@@ -71,13 +71,23 @@ public class ${bean}ServiceImplement extends __APIDefaultImpl<${bean}Model> impl
 	}
 
 	@Override
+	public ${bean}Model getOne(String columns, Object obj) {
+		return this.getOne(columns, "${bean}Model.getOne", obj);
+	}
+
+	@Override
 	public List<${bean}Model> getList(Object obj) {
 		return this.getList(${bean}Model.ALL, obj);
 	}
 
 	@Override
+	public List<${bean}Model> getListByMap(String columns, Map<String, Object> map) {
+		return this.getListByMap(columns, "${bean}Model.getList", map);
+	}
+
+	@Override
 	public List<${bean}Model> getList(String columns, Object obj) {
-		return this.getList(columns, "ManagerModel.getList", obj);
+		return this.getList(columns, "${bean}Model.getList", obj);
 	}
 
 	@Override

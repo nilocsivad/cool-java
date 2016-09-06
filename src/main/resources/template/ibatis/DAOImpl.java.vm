@@ -41,12 +41,12 @@ public class DAOImpl<T> extends SqlMapClientTemplate implements IDAO<T> {
 
 	@Override
 	public int update(String sqlMapID, Object obj) {
-		return update(sqlMapID, obj);
+		return super.update(sqlMapID, obj);
 	}
 
 	@Override
 	public int delete(String sqlMapID, Object obj) {
-		return delete(sqlMapID, obj);
+		return super.delete(sqlMapID, obj);
 	}
 
 	@Override

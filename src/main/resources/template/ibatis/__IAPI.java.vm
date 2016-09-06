@@ -21,11 +21,17 @@ public interface __IAPI<T> {
 
 	public T getOne(String columns, String sqlMapID, Object obj);
 
+	public T getOne(String columns, Object obj);
+
 	public T getOneByPK(String columns, Object obj);
 
 	public List<T> getList(String columns, String sqlMapID, Object obj);
 	
 	public List<T> getList(String columns, Object obj);
+	
+	public List<T> getListByMap(String columns, String sqlMapID, Map<String, Object> map);
+	
+	public List<T> getListByMap(String columns, Map<String, Object> map);
 
 	public Integer getCountInt(String sqlMapID, Object param);
 

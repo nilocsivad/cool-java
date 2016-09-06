@@ -63,6 +63,12 @@ public abstract class __APIDefaultImpl<T> implements __IAPI<T> {
 		Map<String, Object> map = MapUtil.mapThem(new String[] { "columns", "param" }, columns, obj);
 		return this.getDAO().getList(sqlMapID, map);
 	}
+	
+	@Override
+	public List<T> getListByMap(String columns, String sqlMapID, Map<String, Object> map) {
+		map.put("columns", columns);
+		return this.getDAO().getList(sqlMapID, map);
+	}
 
 	@Override
 	public Integer getCountInt(String sqlMapID, Object param) {

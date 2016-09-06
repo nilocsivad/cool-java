@@ -3,16 +3,12 @@
  */
 package ${package_request_base};
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ${package_model}.__Model;
 import ${package_c}.IAPP;
 
 /**
@@ -45,103 +41,6 @@ public class __Request implements IAPP {
 			// });
 			// }
 			map.put(JSON_RESULT, extra);
-		}
-		return map;
-	}
-
-	/**
-	 * @param cols "name,address,telephone"
-	 */
-	public <T> Map<String, Object> toMap1(T obj, String cols) throws SecurityException, IllegalArgumentException, IllegalAccessException {
-		return this.toMap1(0, obj, cols);
-	}
-
-	public <T> Map<String, Object> toMap1(int from, T obj, String cols) throws SecurityException, IllegalArgumentException, IllegalAccessException {
-		return this.toMap2(0, obj, cols.split(","));
-	}
-
-	public <T> Map<String, Object> toMap2(T obj, String... fields) throws SecurityException, IllegalArgumentException, IllegalAccessException {
-		return this.toMap2(0, obj, fields);
-	}
-
-	public <T> Map<String, Object> toMap2(int from, T obj, String... fields) throws SecurityException, IllegalArgumentException, IllegalAccessException {
-		Map<String, Object> map = new HashMap<String, Object>(fields.length + 1);
-		if (obj != null && obj instanceof __Model) {
-			Class<?> cls = obj.getClass();
-			for (String key : fields) {
-				key = key.trim();
-				try {
-					Field fd = cls.getDeclaredField(key);
-					if (fd != null) {
-						fd.setAccessible(true);
-						Object val = fd.get(obj);
-						if (val == null) {
-							map.put(key, (from == 9 ? "nil" : null));
-						}
-						// else {
-						// if (val instanceof Integer && from == 9) {
-						// Integer ival = (Integer) val;
-						// ival = ival == 0 ? -ival : ival;
-						// map.put(key, ival);
-						// }
-						// else {
-						// map.put(key, val);
-						// }
-						// }
-						fd.setAccessible(false);
-					}
-				} catch (NoSuchFieldException e) {
-					map.put(key, "");
-					e.printStackTrace();
-				}
-			}
-		}
-		return map;
-	}
-
-	/**
-	 * @param cols "name,address,telephone"
-	 */
-	public <T> List<Map<String, Object>> toMapList1(List<T> obj, String cols) throws SecurityException, IllegalArgumentException, IllegalAccessException {
-		return this.toMapList1(0, obj, cols);
-	}
-
-	public <T> List<Map<String, Object>> toMapList1(int from, List<T> obj, String cols) throws SecurityException, IllegalArgumentException, IllegalAccessException {
-		return this.toMapList2(0, obj, cols.split(","));
-	}
-
-	public <T> List<Map<String, Object>> toMapList2(List<T> obj, String... fields) throws SecurityException, IllegalArgumentException, IllegalAccessException {
-		return this.toMapList2(0, obj, fields);
-	}
-
-	public <T> List<Map<String, Object>> toMapList2(int from, List<T> obj, String... fields) throws SecurityException, IllegalArgumentException, IllegalAccessException {
-		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>(obj.size() + 1);
-		for (T t : obj) {
-			list.add(this.toMap2(from, t, fields));
-		}
-		return list;
-	}
-
-	/**
-	 * iOS null->nil 0->-0
-	 * @param from 0:Android 9:iOS
-	 * @param map
-	 * @return
-	 */
-	public Map<String, Object> mapData(int from, Map<String, Object> map) {
-		if (from == 9) {
-			for (Map.Entry<String, Object> itm : map.entrySet()) {
-				if (itm.getValue() == null) {
-					itm.setValue("nil");
-				}
-				// else {
-				// if (itm.getValue() instanceof Integer) {
-				// int v = (int) itm.getValue();
-				// if (v == 0)
-				// map.put(itm.getKey(), -v);
-				// }
-				// }
-			}
 		}
 		return map;
 	}

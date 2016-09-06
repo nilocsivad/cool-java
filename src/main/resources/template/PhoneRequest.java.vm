@@ -21,7 +21,7 @@ import ${package_c}.IAPP;
  * @author Colin
  */
 @Controller
-@RequestMapping(value = { "l2/phone/${url}" })
+@RequestMapping(value = { "phone/${url}" })
 public class ${bean}PhoneRequest extends __PhoneRequest implements IAPP {
 
 	/**
@@ -31,8 +31,8 @@ public class ${bean}PhoneRequest extends __PhoneRequest implements IAPP {
 	}
 
 	@ResponseBody
-	@RequestMapping(value = { "{from}/{uniqueCode}/{phoneUID}/query" })
-	public Map<String, Object> queryLimit(@PathVariable int from, @PathVariable String uniqueCode, @PathVariable int phoneUID, HttpServletRequest request, HttpServletResponse response, ModelMap modelMap) throws Exception {
+	@RequestMapping(value = { "l{ver}/{from}/{uniqueCode}/{phoneUID}/query" })
+	public Map<String, Object> queryLimit(@PathVariable int ver, @PathVariable int from, @PathVariable String uniqueCode, @PathVariable int phoneUID, HttpServletRequest request, HttpServletResponse response, ModelMap modelMap) throws Exception {
 		return super.queryLimit(request, response);
 	}
 
