@@ -10,7 +10,6 @@ import java.util.List;
 import org.cool.java.mysql.export.DBAndTable;
 import org.cool.java.mysql.export.TableDefine;
 import org.cool.java.mysql.export.TableDefine.ITableBeanName;
-import org.cool.java.mysql.export.ibatis.IbatisPropertiesWithFolder;
 
 import com.google.gson.Gson;
 
@@ -94,10 +93,9 @@ public class Table2Ibatis {
 
 
 
-		ITableBeanName rule = run.new NameRuleNoUnderline();
-		List<TableDefine> list = dbt.getTables("news", "manager", "manager_code", "contacts", "remote_care", "target", "versions", "feedback", "manager_heartrate", "manager_sleep", "manager_motion", "manager_position");
-		// ITableBeanName rule = run.new NameRuleHTUnderline();
-		// List<TableDefine> list = dbt.getTables("ht_sale_number");
+		// ITableBeanName rule = run.new NameRuleNoUnderline();
+		ITableBeanName rule = run.new NameRuleHTNoUnderline();
+		List<TableDefine> list = dbt.getTables();
 
 
 
